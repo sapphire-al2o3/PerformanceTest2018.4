@@ -1,5 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using System;
 using UnityEngine;
 using UnityEngine.Profiling;
 
@@ -103,6 +105,12 @@ public class ArrayTest : MonoBehaviour
         Profiler.BeginSample("List<string>(10000)");
         List<string> list4 = new List<string>(10000);
         Profiler.EndSample();
+
+		Func<int, int> orderFunc = x => x;
+		// 488byte
+		Profiler.BeginSample("OrderBy");
+		array.OrderBy(orderFunc);
+		Profiler.EndSample();
     }
 
 }
