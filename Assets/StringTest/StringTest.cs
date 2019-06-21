@@ -43,6 +43,27 @@ public class StringTest : MonoBehaviour
         s += num[4];
         Profiler.EndSample();
 
+        // 50byte
+        {
+            Profiler.BeginSample("replace string");
+            string r = s1.Replace(",", ".");
+            Profiler.EndSample();
+        }
+
+        // 50byte
+        {
+            Profiler.BeginSample("replace char");
+            string r = s1.Replace(',', '.');
+            Profiler.EndSample();
+        }
+
+        // 0byte
+        {
+            Profiler.BeginSample("no replace");
+            string r = s1.Replace('@', '.');
+            Profiler.EndSample();
+        }
+
         // 32byte
         {
             Profiler.BeginSample("int -> string (ToString)");
