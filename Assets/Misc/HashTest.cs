@@ -3,9 +3,20 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Security.Cryptography;
 using UnityEngine.Profiling;
+using System.Text;
 
 public class HashTest : MonoBehaviour
 {
+    string GetHashString(byte[] hash)
+    {
+        var sb = new StringBuilder();
+        foreach (var h in hash)
+        {
+            sb.Append(h.ToString("x2"));
+        }
+        return sb.ToString();
+    }
+
     void Start()
     {
         byte[] data = { 0, 1, 2, 3, 4, 5, 6, 7 };
@@ -29,6 +40,50 @@ public class HashTest : MonoBehaviour
                 md5.TransformFinalBlock(data, 4, 4);
                 var hash = md5.Hash;
                 Profiler.EndSample();
+            }
+        }
+
+        {
+            byte[] data2 = new byte[1024 * 1024];
+            for (int i = 0; i < data2.Length; i++)
+            {
+                data2[i] = 0;
+            }
+            using (var md5 = new MD5CryptoServiceProvider())
+            {
+                // 0.5MB
+                int blockSize = 512 * 1024;
+                Profiler.BeginSample("TransformBlock 2");
+                int i = 0;
+                for (i = 0; i < data2.Length - blockSize; i += blockSize)
+                {
+                    md5.TransformBlock(data2, i, blockSize, null, 0);
+                }
+                md5.TransformFinalBlock(data2, i, blockSize);
+                var hash = md5.Hash;
+                Profiler.EndSample();
+                Debug.Log(GetHashString(hash));
+
+                // 1MB
+                md5.Initialize();
+                Profiler.BeginSample("TransformBlock 3");
+                md5.TransformFinalBlock(data2, 0, data2.Length);
+                hash = md5.Hash;
+                Profiler.EndSample();
+                Debug.Log(GetHashString(hash));
+
+                // 192B
+                md5.Initialize();
+                Profiler.BeginSample("TransformBlock 4");
+                i = 0;
+                for (i = 0; i < data2.Length; i += blockSize)
+                {
+                    md5.TransformBlock(data2, i, blockSize, null, 0);
+                }
+                md5.TransformFinalBlock(data2, 0, 0);
+                hash = md5.Hash;
+                Profiler.EndSample();
+                Debug.Log(GetHashString(hash));
             }
         }
 
