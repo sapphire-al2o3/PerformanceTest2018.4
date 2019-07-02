@@ -5,6 +5,7 @@ using UnityEngine.Profiling;
 
 public class UnityAPITest : MonoBehaviour
 {
+
     void Start()
     {
         // 46byte
@@ -50,6 +51,11 @@ public class UnityAPITest : MonoBehaviour
         Profiler.BeginSample("GetComponents<Rigidbody>(List)");
         List<Rigidbody> rigidBodyList = new List<Rigidbody>();
         go.GetComponents<Rigidbody>(rigidBodyList);
+        Profiler.EndSample();
+
+        // 0byte
+        Profiler.BeginSample("GetInstanceID");
+        int id = go.GetInstanceID();
         Profiler.EndSample();
     }
 }
