@@ -28,6 +28,8 @@ public class HashTest : MonoBehaviour
                 Profiler.BeginSample("ComputeHash");
                 var hash = md5.ComputeHash(data);
                 Profiler.EndSample();
+
+                Debug.Log(GetHashString(hash));
             }
         }
 
@@ -36,10 +38,13 @@ public class HashTest : MonoBehaviour
             using (var md5 = new MD5CryptoServiceProvider())
             {
                 Profiler.BeginSample("TransformBlock");
+                md5.TransformBlock(data, 0, 4, null, 0);
                 md5.TransformBlock(data, 4, 4, null, 0);
-                md5.TransformFinalBlock(data, 4, 4);
+                md5.TransformFinalBlock(data, 0, 0);
                 var hash = md5.Hash;
                 Profiler.EndSample();
+
+                Debug.Log(GetHashString(hash));
             }
         }
 
