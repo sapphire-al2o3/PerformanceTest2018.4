@@ -12,7 +12,7 @@ public class IntersectTest : MonoBehaviour
         List<int> a3 = new List<int>();
         List<int> a5 = new List<int>();
 
-        for (int i = 1; i <= 100; i++)
+        for (int i = 1; i <= 1000; i++)
         {
             if (i % 3 == 0)
             {
@@ -26,7 +26,7 @@ public class IntersectTest : MonoBehaviour
 
 
         Profiler.BeginSample("intersect linq");
-        int[] a15 = a3.Intersect(a5).ToArray();
+        List<int> a15 = a3.Intersect(a5).ToList();
         Profiler.EndSample();
 
         foreach (var e in a15)
