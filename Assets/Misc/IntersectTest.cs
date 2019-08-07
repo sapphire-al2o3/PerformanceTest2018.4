@@ -35,14 +35,28 @@ public class IntersectTest : MonoBehaviour
         }
 
         Profiler.BeginSample("intersect");
-        List<int> b15 = new List<int>();
-        foreach (var e in a3)
-        {
-            if (a5.Contains(e))
-            {
-                b15.Add(e);
-            }
-        }
+		int count = a3.Count > a5.Count ? a5.Count : a3.Count;
+        List<int> b15 = new List<int>(count);
+        //foreach (var e in a3)
+        //{
+        //    if (a5.Contains(e))
+        //    {
+        //        b15.Add(e);
+        //    }
+        //}
+		int start = 0;
+		for (int i = 0; i < a3.Count; i++)
+		{
+			for (int j = start; j < a5.Count; j++)
+			{
+				if (a3[i] == a5[j])
+				{
+					start = j + 1;
+					b15.Add(a5[j]);
+					break;
+				}
+			}
+		}
         Profiler.EndSample();
 
         foreach (var e in b15)
@@ -50,25 +64,21 @@ public class IntersectTest : MonoBehaviour
             Debug.Log(e);
         }
 
+		List<int> c5 = new List<int>(a5);
         Profiler.BeginSample("intersect list");
-        int s = 0;
+        int s = a5.Count;
         for (int i = 0; i < a3.Count; i++)
         {
             if (a5.Contains(a3[i]))
             {
-                if (s == 0)
-                {
-                    s = i;
-                }
                 a5.Add(a3[i]);
             }
         }
-        a5.RemoveRange(s, a5.Count - s);
+        a5.RemoveRange(0, s);
         Profiler.EndSample();
 
-        foreach (var e in b15)
-        {
-            Debug.Log(e);
-        }
+		Debug.Log(a5.Count);
+
+
     }
 }
