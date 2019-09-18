@@ -57,5 +57,20 @@ public class UnityAPITest : MonoBehaviour
         Profiler.BeginSample("GetInstanceID");
         int id = go.GetInstanceID();
         Profiler.EndSample();
+
+        // 120byte
+        Profiler.BeginSample("GetChild");
+        for (int i = 0; i < transform.childCount; i++)
+        {
+            var child = transform.GetChild(i);
+        }
+        Profiler.EndSample();
+
+        // 32byte
+        Profiler.BeginSample("foreach transform");
+        foreach (var child in transform)
+        {
+        }
+        Profiler.EndSample();
     }
 }
