@@ -87,5 +87,19 @@ public class StringTest : MonoBehaviour
             s = $"{i0}";
             Profiler.EndSample();
         }
+
+        // 28byte
+        {
+            Profiler.BeginSample("last char (SubString)");
+            s = s0.Substring(s0.Length - 1);
+            Profiler.EndSample();
+        }
+
+        // 28byte
+        {
+            Profiler.BeginSample("last char (ToString)");
+            s = s0[s0.Length - 1].ToString();
+            Profiler.EndSample();
+        }
     }
 }
