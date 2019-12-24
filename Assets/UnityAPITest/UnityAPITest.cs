@@ -66,8 +66,23 @@ public class UnityAPITest : MonoBehaviour
         }
         Profiler.EndSample();
 
+        // 0byte
+        Profiler.BeginSample("GetChild 2");
+        for (int i = 0; i < transform.childCount; i++)
+        {
+            var child = transform.GetChild(i);
+        }
+        Profiler.EndSample();
+
         // 32byte
         Profiler.BeginSample("foreach transform");
+        foreach (var child in transform)
+        {
+        }
+        Profiler.EndSample();
+
+        // 32byte
+        Profiler.BeginSample("foreach transform 2");
         foreach (var child in transform)
         {
         }
