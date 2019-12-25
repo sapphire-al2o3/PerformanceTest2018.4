@@ -101,5 +101,25 @@ public class StringTest : MonoBehaviour
             s = s0[s0.Length - 1].ToString();
             Profiler.EndSample();
         }
+
+        // 48byte
+        {
+            Profiler.BeginSample("join");
+            s = string.Join(",", num);
+            Profiler.EndSample();
+        }
+
+        // 162byte
+        {
+            Profiler.BeginSample("StringBuilder join");
+            var sb = new System.Text.StringBuilder();
+            for (int i = 0; i < num.Length; i++)
+            {
+                sb.Append(num[0]);
+                sb.Append(",");
+            }
+            s = sb.ToString();
+            Profiler.EndSample();
+        }
     }
 }
