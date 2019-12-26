@@ -87,5 +87,23 @@ public class UnityAPITest : MonoBehaviour
         {
         }
         Profiler.EndSample();
+
+
+        Transform c;
+        Transform cc;
+        // 40byte
+        Profiler.BeginSample("Find");
+        c = transform.Find("child0");
+        cc = c.Find("child00");
+        Profiler.EndSample();
+
+        Debug.Assert(cc != null);
+
+        // 40byte
+        Profiler.BeginSample("Find 2");
+        cc = transform.Find("child1/child10");
+        Profiler.EndSample();
+
+        Debug.Assert(cc != null);
     }
 }
