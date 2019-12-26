@@ -3,9 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Profiling;
 
-public class YeildTest : MonoBehaviour {
-
-
+public class YieldTest : MonoBehaviour {
+	
 	IEnumerator Test()
 	{
 		int i = 0;
@@ -25,11 +24,30 @@ public class YeildTest : MonoBehaviour {
 		}
 	}
 
+	IEnumerator Test0()
+	{
+		while (true)
+		{
+			yield return null;
+		}
+	}
+
+	IEnumerator Test1()
+	{
+		while (true)
+		{
+			yield return 0;
+		}
+	}
+
 	void Start ()
 	{
 		Profiler.BeginSample("YieldTest");
 		StartCoroutine(Test());
 		Profiler.EndSample();
+
+		StartCoroutine(Test0());
+		//StartCoroutine(Test1());
 	}
 	
 	// Update is called once per frame
