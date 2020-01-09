@@ -40,7 +40,7 @@ public class YieldTest : MonoBehaviour
         }
     }
 
-    int[] array = new int[3];
+    int[] array = new int[1024];
     IEnumerator Test2()
     {
         int count = array.Length;
@@ -79,26 +79,33 @@ public class YieldTest : MonoBehaviour
         StartCoroutine(Test());
         Profiler.EndSample();
 
-        StartCoroutine(Test0());
+        // StartCoroutine(Test0());
         //StartCoroutine(Test1());
+
+        // 64byte
+        {
+            Profiler.BeginSample("IEnumerator size 0");
+            StartCoroutine(Test0());
+            Profiler.EndSample();
+        }
 
         // 80byte
         {
-            Profiler.BeginSample("IEnumerator size 0");
+            Profiler.BeginSample("IEnumerator size 1");
             StartCoroutine(Test2());
             Profiler.EndSample();
         }
 
         // 72byte
         {
-            Profiler.BeginSample("IEnumerator size 1");
+            Profiler.BeginSample("IEnumerator size 2");
             StartCoroutine(Test3());
             Profiler.EndSample();
         }
 
         // 80byte
         {
-            Profiler.BeginSample("IEnumerator size 2");
+            Profiler.BeginSample("IEnumerator size 3");
             StartCoroutine(Test4());
             Profiler.EndSample();
         }
