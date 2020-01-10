@@ -73,6 +73,16 @@ public class YieldTest : MonoBehaviour
         }
     }
 
+    IEnumerator Test5(int[] array)
+    {
+        int s = 0;
+        for (int i = 0; i < array.Length; i++)
+        {
+            s += array[i];
+            yield return null;
+        }
+    }
+
     void Start ()
     {
         Profiler.BeginSample("YieldTest");
@@ -107,6 +117,13 @@ public class YieldTest : MonoBehaviour
         {
             Profiler.BeginSample("IEnumerator size 3");
             StartCoroutine(Test4());
+            Profiler.EndSample();
+        }
+
+        // 80byte
+        {
+            Profiler.BeginSample("IEnumerator size 4");
+            StartCoroutine(Test5(array));
             Profiler.EndSample();
         }
     }
