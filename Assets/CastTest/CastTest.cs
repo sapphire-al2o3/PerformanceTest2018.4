@@ -13,9 +13,28 @@ public class CastTest : MonoBehaviour
 		Num3
 	}
 
+	public int Hoge(int x) => x * 2;
+
+	public int Hoge2(int x)
+	{
+		return x * 2;
+	}
+
+	public System.Func<int, int> Hoge3 = x => x * 2;
+
+	public void ForEach(int[] array, System.Func<int, int> func)
+	{
+		for (int i = 0; i < array.Length; i++)
+		{
+			array[i] = func(array[i]);
+		}
+	}
+
 	void Start()
 	{
 		EnumNum n = EnumNum.Num3;
+
+		
 
 		// 0byte
 		Profiler.BeginSample("cast () enum -> int");
@@ -45,6 +64,19 @@ public class CastTest : MonoBehaviour
 		// 0byte
 		Profiler.BeginSample("cast () object -> int");
 		i = (int)o;
+		Profiler.EndSample();
+
+		int[] array = new int[100];
+		for (int k = 0; k < array.Length; k++)
+		{
+			array[k] = k;
+		}
+
+		Profiler.BeginSample("lamda 4");
+		for (int k = 0; k < 100; k++)
+		{
+			ForEach(array, x => x * 2);
+		}
 		Profiler.EndSample();
 	}
 }
