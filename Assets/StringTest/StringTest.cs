@@ -121,5 +121,17 @@ public class StringTest : MonoBehaviour
             s = sb.ToString();
             Profiler.EndSample();
         }
+
+        {
+            Profiler.BeginSample("concat null");
+            s = s0 + null;
+            Profiler.EndSample();
+        }
+
+        {
+            Profiler.BeginSample("concat empty");
+            s = s0 + "";
+            Profiler.EndSample();
+        }
     }
 }
