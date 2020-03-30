@@ -40,7 +40,7 @@ public class DictionaryTest : MonoBehaviour
 
         int sum = 0;
 
-        // 88byte
+        // 120byte
         Profiler.BeginSample("values");
         foreach (var e in dic.Values)
         {
@@ -48,7 +48,7 @@ public class DictionaryTest : MonoBehaviour
         }
         Profiler.EndSample();
 
-        // 88byte
+        // 120byte
         Profiler.BeginSample("keys");
         foreach (var k in dic.Keys)
         {
@@ -56,15 +56,26 @@ public class DictionaryTest : MonoBehaviour
         }
         Profiler.EndSample();
 
-        // 64byte
+        // 96byte
         Profiler.BeginSample("pair");
         foreach (var pair in dic)
         {
             sum += pair.Value;
         }
         Profiler.EndSample();
+        
+        // pairでキャッシュが生成されているため0byte
+        Profiler.BeginSample("enemurator");
+        using (var itr = dic.GetEnumerator())
+        {
+            while (itr.MoveNext())
+            {
+                sum += itr.Current.Value;
+            }
+        }
+        Profiler.EndSample();
 
-        // 0.5KB
+        // 80B
         var comp = new EnumTypeComparer();
         Profiler.BeginSample("dictionary<EnumType, int>");
         Dictionary<EnumType, int> dic2 = new Dictionary<EnumType, int>(comp);
