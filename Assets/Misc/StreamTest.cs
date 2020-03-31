@@ -14,6 +14,8 @@ public class StreamTest : MonoBehaviour
 
     void Start()
     {
+        byte[] buffer = null;
+
         using (var ms = new MemoryStream(1024))
         using (var bw = new BinaryWriter(ms))
         {
@@ -23,19 +25,39 @@ public class StreamTest : MonoBehaviour
                 float f = 1.0f;
                 bw.Write(f);
             }
-            
+
             // 0byte
             using (new ProfilerScope("int"))
             {
                 int i = 1;
                 bw.Write(i);
             }
-            
+
             // 0byte
             using (new ProfilerScope("float unsafe"))
             {
                 float f = 1.0f;
                 UnsafeWrite(bw, f);
+            }
+
+            buffer = ms.GetBuffer();
+        }
+
+        using (var ms = new MemoryStream(buffer))
+        using (var br = new BinaryReader(ms))
+        {
+            // 0byte
+            using (new ProfilerScope("read float"))
+            {
+                float f = br.ReadSingle();
+                Debug.Assert(f == 1.0f);
+            }
+
+            // 0byte
+            using (new ProfilerScope("read int"))
+            {
+                int i = br.ReadInt32();
+                Debug.Assert(i == 1);
             }
         }
     }
