@@ -36,7 +36,7 @@ public class StreamTest : MonoBehaviour
             // 0byte
             using (new ProfilerScope("float unsafe"))
             {
-                float f = 1.0f;
+                float f = 1.234f;
                 UnsafeWrite(bw, f);
             }
 
@@ -58,6 +58,11 @@ public class StreamTest : MonoBehaviour
             {
                 int i = br.ReadInt32();
                 Debug.Assert(i == 1);
+            }
+
+            {
+                float f = br.ReadSingle();
+                Debug.Assert(f == 1.234f);
             }
         }
     }
