@@ -8,6 +8,7 @@ public class BuildAssetBundle : Editor
 	[MenuItem("Editor/Build AssetBundles")]
 	static void Build()
 	{
-		BuildPipeline.BuildAssetBundles("Assets/AssetBundles", BuildAssetBundleOptions.ChunkBasedCompression, BuildTarget.StandaloneWindows64);
+        var option = BuildAssetBundleOptions.ChunkBasedCompression | BuildAssetBundleOptions.DisableWriteTypeTree;
+		BuildPipeline.BuildAssetBundles("Assets/AssetBundles", option, BuildTarget.Android);
 	}
 }
