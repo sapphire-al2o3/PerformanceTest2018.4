@@ -5,10 +5,10 @@ using UnityEditor;
 
 public class BuildAssetBundle : Editor
 {
-	[MenuItem("Editor/Build AssetBundles")]
-	static void Build()
-	{
+    [MenuItem("Editor/Build AssetBundles")]
+    static void Build()
+    {
         var option = BuildAssetBundleOptions.ChunkBasedCompression | BuildAssetBundleOptions.DisableWriteTypeTree;
-		BuildPipeline.BuildAssetBundles("Assets/AssetBundles", option, BuildTarget.Android);
-	}
+        BuildPipeline.BuildAssetBundles("Assets/AssetBundles", option, BuildTarget.Android);
+    }
 }
