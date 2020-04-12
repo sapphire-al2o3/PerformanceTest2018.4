@@ -29,17 +29,33 @@ public class RemoveUnusedParticleModule : Editor
         {
             if (HasGradient(p.main.startColor))
             {
-                Debug.Log("hoge");
+                Debug.Log("Start Color");
             }
 
             if (HasCurve(p.main.startSize))
             {
-                Debug.Log("hoge");
+                Debug.Log("Start Size");
+            }
+
+            if (HasCurve(p.main.startSizeX))
+            {
+                Debug.Log("Start Size X");
             }
 
             if (!p.emission.enabled)
             {
-                Debug.Log($"Emission {p.name}");
+                var m = p.emission;
+                if (HasCurve(m.rateOverDistance) || HasCurve(m.rateOverTime))
+                {
+                    Debug.Log($"Emission {p.name}");
+                    m.rateOverDistance = new ParticleSystem.MinMaxCurve();
+                    m.rateOverTime = new ParticleSystem.MinMaxCurve();
+                }
+                if (m.burstCount > 0)
+                {
+                    Debug.Log($"Emission {p.name}");
+                    m.burstCount = 0;
+                }
             }
 
             if (!p.shape.enabled)
@@ -81,6 +97,15 @@ public class RemoveUnusedParticleModule : Editor
                 }
             }
 
+            if (!p.inheritVelocity.enabled)
+            {
+                var m = p.inheritVelocity;
+                if (HasCurve(m.curve))
+                {
+                    Debug.Log("Inherit Velocity");
+                }
+            }
+
             if (!p.sizeOverLifetime.enabled)
             {
                 var m = p.sizeOverLifetime;
@@ -97,7 +122,7 @@ public class RemoveUnusedParticleModule : Editor
             if (!p.sizeBySpeed.enabled)
             {
                 var m = p.sizeBySpeed;
-                if (m.size.curve != null || m.x.curve != null || m.y.curve != null || m.z.curve != null)
+                if (HasCurve(m.size) || HasCurve(m.x) || HasCurve(m.y) || HasCurve(m.z))
                 {
                     Debug.Log($"Size by Speed {p.name}");
                     m.size = new ParticleSystem.MinMaxCurve();
@@ -110,7 +135,7 @@ public class RemoveUnusedParticleModule : Editor
             if (!p.rotationOverLifetime.enabled)
             {
                 var m = p.rotationOverLifetime;
-                if (m.x.curve != null || m.y.curve != null || m.z.curve != null)
+                if (HasCurve(m.x) || HasCurve(m.y) || HasCurve(m.z))
                 {
                     Debug.Log($"Rotation over Lifetime {p.name}");
                     m.x = new ParticleSystem.MinMaxCurve();
@@ -122,7 +147,7 @@ public class RemoveUnusedParticleModule : Editor
             if (!p.rotationBySpeed.enabled)
             {
                 var m = p.rotationBySpeed;
-                if (m.x.curve != null || m.y.curve != null || m.z.curve != null)
+                if (HasCurve(m.x) || HasCurve(m.y) || HasCurve(m.z))
                 {
                     Debug.Log($"Rotation by Speed {p.name}");
                     m.x = new ParticleSystem.MinMaxCurve();
@@ -220,6 +245,15 @@ public class RemoveUnusedParticleModule : Editor
                     Debug.Log($"Lights {p.name}");
                     m.range = new ParticleSystem.MinMaxCurve();
                     m.intensity = new ParticleSystem.MinMaxCurve();
+                }
+            }
+
+            if (!p.collision.enabled)
+            {
+                var m = p.collision;
+                if (HasCurve(m.bounce) || HasCurve(m.dampen) || HasCurve(m.lifetimeLoss))
+                {
+                    Debug.Log("Dampen");
                 }
             }
         }
