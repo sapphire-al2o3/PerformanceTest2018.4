@@ -46,7 +46,7 @@ public class CastTest : MonoBehaviour
 		i = System.Convert.ToInt32(n);
 		Profiler.EndSample();
 
-		// 40byte
+		// 20byte
 		Profiler.BeginSample("cast Enum.ToObject int -> enum");
 		n = (EnumNum)System.Enum.ToObject(typeof(EnumNum), i);
 		Profiler.EndSample();
