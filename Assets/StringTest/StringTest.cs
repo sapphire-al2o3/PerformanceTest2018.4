@@ -133,5 +133,12 @@ public class StringTest : MonoBehaviour
             s = s0 + "";
             Profiler.EndSample();
         }
+
+        // 0byte
+        {
+            Profiler.BeginSample("String.ToString");
+            s = s0.ToString();
+            Profiler.EndSample();
+        }
     }
 }
