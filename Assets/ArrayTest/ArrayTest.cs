@@ -106,11 +106,27 @@ public class ArrayTest : MonoBehaviour
         List<string> list4 = new List<string>(10000);
         Profiler.EndSample();
 
-		Func<int, int> orderFunc = x => x;
-		// 488byte
-		Profiler.BeginSample("OrderBy");
-		array.OrderBy(orderFunc);
-		Profiler.EndSample();
+        Func<int, int> orderFunc = x => x;
+        // 488byte
+        Profiler.BeginSample("OrderBy");
+        array.OrderBy(orderFunc);
+        Profiler.EndSample();
+
+        // 10.9KB
+        Profiler.BeginSample("Sort");
+        for (int i = 0; i < 100; i++)
+        {
+            Array.Sort(array);
+        }
+        Profiler.EndSample();
+
+        // 10.9KB
+        Profiler.BeginSample("Sort Default");
+        for (int i = 0; i < 100; i++)
+        {
+            Array.Sort(array, Comparer<int>.Default);
+        }
+        Profiler.EndSample();
     }
 
 }
