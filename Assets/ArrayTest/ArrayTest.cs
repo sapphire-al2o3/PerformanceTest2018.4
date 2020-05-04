@@ -113,6 +113,7 @@ public class ArrayTest : MonoBehaviour
         Profiler.EndSample();
 
         // 10.9KB
+        // Comparer.Compare -> Comparisionのキャストが発生する
         Profiler.BeginSample("Sort");
         for (int i = 0; i < 100; i++)
         {
@@ -122,9 +123,18 @@ public class ArrayTest : MonoBehaviour
 
         // 10.9KB
         Profiler.BeginSample("Sort Default");
+        var comparer = Comparer<int>.Default;
         for (int i = 0; i < 100; i++)
         {
-            Array.Sort(array, Comparer<int>.Default);
+            Array.Sort(array, comparer);
+        }
+        Profiler.EndSample();
+
+        // 112byte
+        Profiler.BeginSample("Sort Lambda");
+        for (int i = 0; i < 100; i++)
+        {
+            Array.Sort(array, (x, y) => x - y);
         }
         Profiler.EndSample();
     }
