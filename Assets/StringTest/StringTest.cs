@@ -38,10 +38,30 @@ public class StringTest : MonoBehaviour
         string s = num[0] + num[1] + num[2];
         Profiler.EndSample();
 
-        Profiler.BeginSample("concat4");
+        // GC.Alloc x1 34B
+        Profiler.BeginSample("concat +");
         s = num[0] + num[1] + num[2] + num[3];
-        s += num[4];
         Profiler.EndSample();
+
+        // GC.Alloc x3 96B
+        Profiler.BeginSample("concat +=");
+        s = num[0];
+        s += num[1];
+        s += num[2];
+        s += num[3];
+        Profiler.EndSample();
+
+        // 150Byte
+        {
+            Profiler.BeginSample("StringBuilder");
+            var sb = new System.Text.StringBuilder();
+            for (int i = 0; i < num.Length; i++)
+            {
+                sb.Append(num[i]);
+            }
+            s = sb.ToString();
+            Profiler.EndSample();
+        }
 
         // 50byte
         {
