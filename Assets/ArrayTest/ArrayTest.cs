@@ -137,6 +137,33 @@ public class ArrayTest : MonoBehaviour
             Array.Sort(array, (x, y) => x - y);
         }
         Profiler.EndSample();
+
+
+        // 8.3Kbyte
+        {
+            Profiler.BeginSample("List default");
+            List<int> list5 = new List<int>();
+
+            for (int i = 0; i < 1000; i++)
+            {
+                list5.Add(i);
+            }
+
+            Profiler.EndSample();
+        }
+
+        // 4Kbyte
+        {
+            Profiler.BeginSample("List Captacity");
+            List<int> list5 = new List<int>(1000);
+
+            for (int i = 0; i < 1000; i++)
+            {
+                list5.Add(i);
+            }
+
+            Profiler.EndSample();
+        }
     }
 
 }
