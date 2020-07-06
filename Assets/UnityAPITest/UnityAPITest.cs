@@ -105,5 +105,29 @@ public class UnityAPITest : MonoBehaviour
         Profiler.EndSample();
 
         Debug.Assert(cc != null);
+
+        // 2.9kbyte
+        {
+            var animator = GetComponent<Animator>();
+            int hash = 0;
+            Profiler.BeginSample("Animator.parameters");
+            foreach (var p in animator.parameters)
+            {
+                hash = p.nameHash;
+            }
+            Profiler.EndSample();
+        }
+
+        // 368byte
+        {
+            var animator = GetComponent<Animator>();
+            Profiler.BeginSample("Animator.GetParameter");
+            int hash = 0;
+            for (int i = 0; i < animator.parameterCount; i++)
+            {
+                hash = animator.GetParameter(i).nameHash;
+            }
+            Profiler.EndSample();
+        }
     }
 }
