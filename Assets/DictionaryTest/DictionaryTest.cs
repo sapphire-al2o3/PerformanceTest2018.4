@@ -159,5 +159,15 @@ public class DictionaryTest : MonoBehaviour
 		Profiler.BeginSample("reset dictionary (values)");
 		
 		Profiler.EndSample();
+
+		// 96B
+		{
+			Profiler.BeginSample("readonly dictionary");
+			var rodic = new System.Collections.ObjectModel.ReadOnlyDictionary<int, int>(dic);
+			foreach (var e in rodic)
+			{
+			}
+			Profiler.EndSample();
+		}
 	}
 }
