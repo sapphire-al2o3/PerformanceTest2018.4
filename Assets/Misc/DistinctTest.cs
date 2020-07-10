@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 
-public class DistrictTest : MonoBehaviour
+public class DistinctTest : MonoBehaviour
 {
     // Start is called before the first frame update
     void Start()
@@ -74,11 +74,5 @@ public class DistrictTest : MonoBehaviour
                 }
             }
         }
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 }
