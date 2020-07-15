@@ -160,5 +160,24 @@ public class StringTest : MonoBehaviour
             s = s0.ToString();
             Profiler.EndSample();
         }
+
+        {
+            Profiler.BeginSample("IndexOf default");
+            for (int i = 0; i < 1000; i++)
+            {
+                bool ret = s0.IndexOf("bbccddee") >= 0;
+            }
+            Profiler.EndSample();
+        }
+
+        {
+            Profiler.BeginSample("IndexOf Ordinal");
+            for (int i = 0; i < 1000; i++)
+            {
+                // Containsと同じ
+                bool ret = s0.IndexOf("bbccddee", System.StringComparison.Ordinal) >= 0;
+            }
+            Profiler.EndSample();
+        }
     }
 }
