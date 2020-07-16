@@ -129,5 +129,19 @@ public class UnityAPITest : MonoBehaviour
             }
             Profiler.EndSample();
         }
+
+        // 42byte
+        {
+            Profiler.BeginSample("tag equals");
+            bool ret = gameObject.tag == "hoge";
+            Profiler.EndSample();
+        }
+
+        // 0byte
+        {
+            Profiler.BeginSample("tag CompareTag");
+            bool ret = gameObject.CompareTag("hoge");
+            Profiler.EndSample();
+        }
     }
 }
