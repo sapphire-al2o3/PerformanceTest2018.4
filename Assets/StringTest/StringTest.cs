@@ -63,10 +63,33 @@ public class StringTest : MonoBehaviour
 
         // 180B
         {
+            
             Profiler.BeginSample("concat + 5");
             string s = num[0] + num[1] + num[2] + num[3] + num[4];
             Profiler.EndSample();
         }
+
+        // 180B
+        {
+            Profiler.BeginSample("concat new array");
+            string s = string.Concat(new string[] { num[0], num[1], num[2], num[3], num[4] });
+            Profiler.EndSample();
+        }
+
+        // 118B
+        {
+            Profiler.BeginSample("concat array");
+            string s = string.Concat(num);
+            Profiler.EndSample();
+        }
+
+        // 38B
+        {
+            Profiler.BeginSample("join empty");
+            string s = string.Join("", num);
+            Profiler.EndSample();
+        }
+
 
         // 150Byte
         {
