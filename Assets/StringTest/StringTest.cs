@@ -61,6 +61,13 @@ public class StringTest : MonoBehaviour
             Profiler.EndSample();
         }
 
+        // 180B
+        {
+            Profiler.BeginSample("concat + 5");
+            string s = num[0] + num[1] + num[2] + num[3] + num[4];
+            Profiler.EndSample();
+        }
+
         // 150Byte
         {
             Profiler.BeginSample("StringBuilder");
