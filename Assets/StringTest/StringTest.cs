@@ -65,6 +65,7 @@ public class StringTest : MonoBehaviour
         {
             
             Profiler.BeginSample("concat + 5");
+            // 5個以上の場合、配列が生成される
             string s = num[0] + num[1] + num[2] + num[3] + num[4];
             Profiler.EndSample();
         }
@@ -79,6 +80,7 @@ public class StringTest : MonoBehaviour
         // 118B
         {
             Profiler.BeginSample("concat array");
+            // Concatは配列がコピーされる(.NET Framework)
             string s = string.Concat(num);
             Profiler.EndSample();
         }
