@@ -143,5 +143,20 @@ public class UnityAPITest : MonoBehaviour
             bool ret = gameObject.CompareTag("hoge");
             Profiler.EndSample();
         }
+
+        // リフレクション呼び出しがあるがIL2CPPビルドだとGC Allocが少なくなる
+        // 4.2KB
+        {
+            Profiler.BeginSample("SupportsTextureFormat 0");
+            bool result = SystemInfo.SupportsTextureFormat(TextureFormat.ETC2_RGB);
+            Profiler.EndSample();
+        }
+
+        // 400B
+        {
+            Profiler.BeginSample("SupportsTextureFormat 1");
+            bool result = SystemInfo.SupportsTextureFormat(TextureFormat.ETC2_RGB);
+            Profiler.EndSample();
+        }
     }
 }
