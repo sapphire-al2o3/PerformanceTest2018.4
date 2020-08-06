@@ -158,5 +158,14 @@ public class UnityAPITest : MonoBehaviour
             bool result = SystemInfo.SupportsTextureFormat(TextureFormat.ETC2_RGB);
             Profiler.EndSample();
         }
+
+        // SupportsTextureFormatが呼び出されている
+        // 1.1KB
+        {
+            Profiler.BeginSample("new Texture2D");
+            var tex = new Texture2D(1, 1);
+            Destroy(tex);
+            Profiler.EndSample();
+        }
     }
 }
