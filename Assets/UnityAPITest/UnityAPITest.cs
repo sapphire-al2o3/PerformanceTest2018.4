@@ -106,7 +106,7 @@ public class UnityAPITest : MonoBehaviour
 
         Debug.Assert(cc != null);
 
-        // 2.9kbyte
+        // 368byte
         {
             var animator = GetComponent<Animator>();
             int hash = 0;
@@ -118,7 +118,8 @@ public class UnityAPITest : MonoBehaviour
             Profiler.EndSample();
         }
 
-        // 368byte
+        // GetParameterはparametersを内部で呼び出している
+        // 2.9KB
         {
             var animator = GetComponent<Animator>();
             Profiler.BeginSample("Animator.GetParameter");
@@ -152,6 +153,7 @@ public class UnityAPITest : MonoBehaviour
             Profiler.EndSample();
         }
 
+        // キャッシュされるので2回目の呼び出しはGC Allocが少なくなる
         // 400B
         {
             Profiler.BeginSample("SupportsTextureFormat 1");
@@ -165,6 +167,20 @@ public class UnityAPITest : MonoBehaviour
             Profiler.BeginSample("new Texture2D");
             var tex = new Texture2D(1, 1);
             Destroy(tex);
+            Profiler.EndSample();
+        }
+
+        // 40byte
+        {
+            Profiler.BeginSample("LayerToName");
+            string layer = LayerMask.LayerToName(0);
+            Profiler.EndSample();
+        }
+
+        // 0byte
+        {
+            Profiler.BeginSample("NameToLayer");
+            int layer = LayerMask.NameToLayer("Default");
             Profiler.EndSample();
         }
     }
