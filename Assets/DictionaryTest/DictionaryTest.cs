@@ -63,7 +63,7 @@ public class DictionaryTest : MonoBehaviour
             sum += pair.Value;
         }
         Profiler.EndSample();
-        
+
         // pairでキャッシュが生成されているため0byte
         Profiler.BeginSample("enemurator");
         using (var itr = dic.GetEnumerator())
@@ -77,46 +77,46 @@ public class DictionaryTest : MonoBehaviour
 
         // 80B
         var comp = new EnumTypeComparer();
-		Dictionary<EnumType, int> dic2 = new Dictionary<EnumType, int>();
-		Profiler.BeginSample("dictionary<EnumType, int>");
+        Dictionary<EnumType, int> dic2 = new Dictionary<EnumType, int>();
+        Profiler.BeginSample("dictionary<EnumType, int>");
         dic2 = new Dictionary<EnumType, int>();
         Profiler.EndSample();
 
-		// 172B
-		Profiler.BeginSample("dictionary<EnumType, int>.set_item");
-		for (int i = 0; i < 100; i++)
-		{
-			dic2[EnumType.A] = 0;
-			dic2[EnumType.B] = 1;
-			dic2[EnumType.C] = 2;
-		}
-		Profiler.EndSample();
+        // 172B
+        Profiler.BeginSample("dictionary<EnumType, int>.set_item");
+        for (int i = 0; i < 100; i++)
+        {
+            dic2[EnumType.A] = 0;
+            dic2[EnumType.B] = 1;
+            dic2[EnumType.C] = 2;
+        }
+        Profiler.EndSample();
 
-		Profiler.BeginSample("dictionary<EnumType, int>.get_item");
-		int dic2_0 = dic2[EnumType.A];
-		dic2_0 += dic2[EnumType.B];
-		dic2_0 += dic2[EnumType.C];
-		Profiler.EndSample();
+        Profiler.BeginSample("dictionary<EnumType, int>.get_item");
+        int dic2_0 = dic2[EnumType.A];
+        dic2_0 += dic2[EnumType.B];
+        dic2_0 += dic2[EnumType.C];
+        Profiler.EndSample();
 
-		// 488byte
-		Dictionary<int, int> dic1 = new Dictionary<int, int>();
-		Profiler.BeginSample("dictionary<int, int>");
+        // 488byte
+        Dictionary<int, int> dic1 = new Dictionary<int, int>();
+        Profiler.BeginSample("dictionary<int, int>");
         dic1 = new Dictionary<int, int>();
         Profiler.EndSample();
 
-		Profiler.BeginSample("dictionary<int, int>.set_item");
-		for (int i = 0; i < 100; i++)
-		{
-			dic1[0] = 0;
-		}
-		Profiler.EndSample();
+        Profiler.BeginSample("dictionary<int, int>.set_item");
+        for (int i = 0; i < 100; i++)
+        {
+            dic1[0] = 0;
+        }
+        Profiler.EndSample();
 
-		Profiler.BeginSample("dictionary<int, int>.get_item");
-		int dic1_0 = dic1[0];
-		Profiler.EndSample();
+        Profiler.BeginSample("dictionary<int, int>.get_item");
+        int dic1_0 = dic1[0];
+        Profiler.EndSample();
 
-		// 217.3KB
-		Profiler.BeginSample("dictionary<int, int>(10000)");
+        // 217.3KB
+        Profiler.BeginSample("dictionary<int, int>(10000)");
         dic1 = new Dictionary<int, int>(10000);
         Profiler.EndSample();
 
@@ -140,34 +140,46 @@ public class DictionaryTest : MonoBehaviour
         dic4 = new Dictionary<string, string>(10000);
         Profiler.EndSample();
 
-		// 234.6KB
-		Profiler.BeginSample("reset dictionary (ToArray)");
-		//foreach (var key in dic.Keys.to)
-		{
-		//	dic[key] = 0;
-		}
-		Profiler.EndSample();
+        // 234.6KB
+        Profiler.BeginSample("reset dictionary (ToArray)");
+        //foreach (var key in dic.Keys.to)
+        {
+            //	dic[key] = 0;
+        }
+        Profiler.EndSample();
 
-		// 234.6KB
-		Profiler.BeginSample("reset dictionary (new List)");
-		foreach (var key in new List<int>(dic.Keys))
-		{
-			dic[key] = 0;
-		}
-		Profiler.EndSample();
+        // 234.6KB
+        Profiler.BeginSample("reset dictionary (new List)");
+        foreach (var key in new List<int>(dic.Keys))
+        {
+            dic[key] = 0;
+        }
+        Profiler.EndSample();
 
-		Profiler.BeginSample("reset dictionary (values)");
-		
-		Profiler.EndSample();
+        Profiler.BeginSample("reset dictionary (values)");
 
-		// 96B
-		{
-			Profiler.BeginSample("readonly dictionary");
-			var rodic = new System.Collections.ObjectModel.ReadOnlyDictionary<int, int>(dic);
-			foreach (var e in rodic)
-			{
-			}
-			Profiler.EndSample();
-		}
-	}
+        Profiler.EndSample();
+
+        // 96B
+        {
+            Profiler.BeginSample("readonly dictionary");
+            var rodic = new System.Collections.ObjectModel.ReadOnlyDictionary<int, int>(dic);
+            foreach (var e in rodic)
+            {
+                sum += e.Value;
+            }
+            Profiler.EndSample();
+        }
+
+        // 48B
+        {
+            Profiler.BeginSample("readonly dictionary 2");
+            IReadOnlyDictionary<int, int> rodic = dic;
+            foreach (var e in rodic)
+            {
+                sum += e.Value;
+            }
+            Profiler.EndSample();
+        }
+    }
 }
