@@ -41,28 +41,61 @@ public class DictionaryTest : MonoBehaviour
         int sum = 0;
 
         // 120byte
-        Profiler.BeginSample("values");
-        foreach (var e in dic.Values)
         {
-            sum += e;
+            Profiler.BeginSample("values");
+            foreach (var e in dic.Values)
+            {
+                sum += e;
+            }
+            Profiler.EndSample();
         }
-        Profiler.EndSample();
 
         // 120byte
-        Profiler.BeginSample("keys");
-        foreach (var k in dic.Keys)
         {
-            sum += dic[k];
+            // 72byte
+            Profiler.BeginSample("keys get");
+            // new KeyCollection (24byte)
+            Dictionary<int, int>.KeyCollection keys = dic.Keys;
+            Profiler.EndSample();
+
+            // 48byte
+            Profiler.BeginSample("keys foreach");
+            foreach (int k in keys)
+            {
+                sum += dic[k];
+            }
+            Profiler.EndSample();
         }
-        Profiler.EndSample();
+
+        // 0byte
+        {
+            Profiler.BeginSample("keys 2");
+            foreach (var k in dic.Keys)
+            {
+                sum += dic[k];
+            }
+            Profiler.EndSample();
+        }
 
         // 96byte
-        Profiler.BeginSample("pair");
-        foreach (var pair in dic)
         {
-            sum += pair.Value;
+            Profiler.BeginSample("pair");
+            foreach (var pair in dic)
+            {
+                sum += pair.Value;
+            }
+            Profiler.EndSample();
         }
-        Profiler.EndSample();
+
+        // 0byte
+        {
+            Profiler.BeginSample("pair 2");
+            foreach (var pair in dic)
+            {
+                sum += pair.Value;
+            }
+            Profiler.EndSample();
+        }
 
         // pairでキャッシュが生成されているため0byte
         Profiler.BeginSample("enemurator");
