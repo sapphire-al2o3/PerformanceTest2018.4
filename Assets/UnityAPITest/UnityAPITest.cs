@@ -183,5 +183,19 @@ public class UnityAPITest : MonoBehaviour
             int layer = LayerMask.NameToLayer("Default");
             Profiler.EndSample();
         }
+
+        // 40byte
+        {
+            Profiler.BeginSample("Camera.main 0");
+            var camera = Camera.main;
+            Profiler.EndSample();
+        }
+
+        // 0byte
+        {
+            Profiler.BeginSample("Camera.main 1");
+            var camera = Camera.main;
+            Profiler.EndSample();
+        }
     }
 }
