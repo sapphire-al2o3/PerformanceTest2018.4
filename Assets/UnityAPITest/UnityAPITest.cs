@@ -170,6 +170,22 @@ public class UnityAPITest : MonoBehaviour
             Profiler.EndSample();
         }
 
+        // 初回のみ(ScriptingWrapperFor)
+        // 40byte
+        {
+            Profiler.BeginSample("shader");
+            var shader = Shader.Find("Standard");
+            Profiler.EndSample();
+        }
+
+        // 40byte
+        {
+            Profiler.BeginSample("new Material");
+            var shader = Shader.Find("Standard");
+            var mat = new Material(shader);
+            Profiler.EndSample();
+        }
+
         // 40byte
         {
             Profiler.BeginSample("LayerToName");
