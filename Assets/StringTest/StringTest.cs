@@ -5,6 +5,35 @@ using UnityEngine.Profiling;
 
 public class StringTest : MonoBehaviour
 {
+
+    public static class StringBuilderUtil
+    {
+        public static void AppendInt(System.Text.StringBuilder sb, int value)
+        {
+            int n = value;
+            if (n < 0)
+            {
+                sb.Append('-');
+                n *= -1;
+            }
+            int k = 1;
+            int m = n;
+            while (m / 10 != 0)
+            {
+                m /= 10;
+                k *= 10;
+            }
+            while (k != 0)
+            {
+                int d = n / k;
+                n = n - d * k;
+                k /= 10;
+                char c = (char)('0' + d);
+                sb.Append(c);
+            }
+        }
+    }
+
     void Start()
     {
         string s0 = "aabbccddeeff";
@@ -63,7 +92,7 @@ public class StringTest : MonoBehaviour
 
         // 180B
         {
-            
+
             Profiler.BeginSample("concat + 5");
             // 5個以上の場合、配列が生成される
             string s = num[0] + num[1] + num[2] + num[3] + num[4];
@@ -220,6 +249,93 @@ public class StringTest : MonoBehaviour
                 bool ret = s0.IndexOf("bbccddee", System.StringComparison.Ordinal) >= 0;
             }
             Profiler.EndSample();
+        }
+
+        int[] numbers =
+        {
+            0,
+            1,
+            12,
+            123,
+            -3,
+            -32,
+            -321
+        };
+
+        // .NET Frameworkの実装ではint.ToStringされる
+        // 186byte
+        {
+            var sb = new System.Text.StringBuilder(100);
+            Profiler.BeginSample("StringBuilder number 1");
+
+            for (int i = 0; i < numbers.Length; i++)
+            {
+                sb.Append(numbers[i]);
+            }
+
+            Profiler.EndSample();
+            string s = sb.ToString();
+            Debug.Log(s);
+        }
+
+        {
+            Profiler.BeginSample("int.ToString 0");
+
+            int n = 0;
+            string s = n.ToString();
+
+            Profiler.EndSample();
+
+            int m = 0;
+            string ss = m.ToString();
+            Debug.Log(object.ReferenceEquals(ss, s));
+        }
+
+        {
+            Profiler.BeginSample("int.ToString 1");
+
+            int n = 1;
+            
+            string s = n.ToString();
+
+            Profiler.EndSample();
+
+            int m = 1;
+            string ss = m.ToString();
+            Debug.Log(object.ReferenceEquals(ss, s));
+        }
+
+
+        // 0byte
+        {
+            var sb = new System.Text.StringBuilder(100);
+            Profiler.BeginSample("StringBuilder number 2");
+
+            for (int i = 0; i < numbers.Length; i++)
+            {
+                int n = numbers[i];
+                StringBuilderUtil.AppendInt(sb, n);
+            }
+
+            Profiler.EndSample();
+            string s = sb.ToString();
+            Debug.Log(s);
+        }
+
+        // boolは文字列リテラルが使われる
+        // 0byte
+        {
+            var sb = new System.Text.StringBuilder(100);
+            Profiler.BeginSample("StringBuilder bool");
+            bool t = true;
+            bool f = false;
+            for (int i = 0; i < 10; i++)
+            {
+                sb.Append(i % 2 == 0 ? t : f);
+            }
+            Profiler.EndSample();
+            string s = sb.ToString();
+            Debug.Log(s);
         }
     }
 }
