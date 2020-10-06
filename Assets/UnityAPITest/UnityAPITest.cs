@@ -5,8 +5,23 @@ using UnityEngine.Profiling;
 
 public class UnityAPITest : MonoBehaviour
 {
+    private void Start()
+    {
+#if UNITY_EDITOR
+        Run();
+#endif
+    }
 
-    void Start()
+
+    private void Update()
+    {
+        if (Input.GetMouseButtonDown(0))
+        {
+            Run();
+        }
+    }
+
+    void Run()
     {
         // 46byte
         Profiler.BeginSample("Object.name");
@@ -21,12 +36,13 @@ public class UnityAPITest : MonoBehaviour
         }
         Profiler.EndSample();
 
-        // 40byte
+        // 24byte
         Profiler.BeginSample("GameObject");
         var go = new GameObject();
         Profiler.EndSample();
 
         // 0.5KB
+        // IL2CPP build 24byte
         Profiler.BeginSample("AddComponent");
         go.AddComponent<EmptyComponent>();
         Profiler.EndSample();
@@ -43,9 +59,18 @@ public class UnityAPITest : MonoBehaviour
 
         // 0.6KB
         // 存在しないComponentを取得しようとするとメモリがとられる？
-        Profiler.BeginSample("GetComponent<Rigidbody>");
-        var r = go.GetComponent<Rigidbody>();
-        Profiler.EndSample();
+        // MissingComponentString
+        {
+            Profiler.BeginSample("GetComponent<Rigidbody>");
+            var r = go.GetComponent<Rigidbody>();
+            Profiler.EndSample();
+        }
+
+        {
+            Profiler.BeginSample("GetComponent<ParticleTest>");
+            var p = go.GetComponent<ParticleTest>();
+            Profiler.EndSample();
+        }
 
         // 120byte
         Profiler.BeginSample("GetComponents<Rigidbody>(List)");
@@ -147,6 +172,7 @@ public class UnityAPITest : MonoBehaviour
 
         // リフレクション呼び出しがあるがIL2CPPビルドだとGC Allocが少なくなる
         // 4.2KB
+        // IL2CPP build 40byte
         {
             Profiler.BeginSample("SupportsTextureFormat 0");
             bool result = SystemInfo.SupportsTextureFormat(TextureFormat.ETC2_RGB);
@@ -163,6 +189,7 @@ public class UnityAPITest : MonoBehaviour
 
         // SupportsTextureFormatが呼び出されている
         // 1.1KB
+        // IL2CPP build 64byte
         {
             Profiler.BeginSample("new Texture2D");
             var tex = new Texture2D(1, 1);
@@ -179,6 +206,7 @@ public class UnityAPITest : MonoBehaviour
         }
 
         // 40byte
+        // IL2CPP build 302byte
         {
             Profiler.BeginSample("new Material");
             var shader = Shader.Find("Standard");
