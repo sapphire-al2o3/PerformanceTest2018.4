@@ -164,6 +164,49 @@ public class ArrayTest : MonoBehaviour
 
             Profiler.EndSample();
         }
-    }
 
+        List<string> tmpList = new List<string>();
+        for (int i = 0; i < 100; i++)
+        {
+            tmpList.Add("hoge");
+        }
+
+        // 0byte
+        {
+            Profiler.BeginSample("foreach List");
+            string str = null;
+            foreach (var e in tmpList)
+            {
+                str = e;
+            }
+
+            Profiler.EndSample();
+        }
+
+        // IEnumeratorへのボックス化がおこる？
+        // 40byte
+        {
+            Profiler.BeginSample("foreach IList");
+            IList ilist = (IList)tmpList;
+            string str = null;
+            foreach (string e in ilist)
+            {
+                str = e;
+            }
+
+            Profiler.EndSample();
+        }
+
+        {
+            Profiler.BeginSample("for IList");
+            IList ilist = (IList)tmpList;
+            string str = null;
+            for (int i = 0; i < ilist.Count; i++)
+            {
+                str = (string)ilist[i];
+            }
+
+            Profiler.EndSample();
+        }
+    }
 }
