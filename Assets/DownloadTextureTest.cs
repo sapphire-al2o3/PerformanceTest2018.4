@@ -6,10 +6,10 @@ using UnityEngine.Networking;
 public class DownloadTextureTest : MonoBehaviour
 {
     [SerializeField]
-    string url;
+    string url = null;
 
     [SerializeField]
-    string url2;
+    string url2 = null;
 
     void Start()
     {
