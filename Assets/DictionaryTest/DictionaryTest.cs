@@ -214,5 +214,71 @@ public class DictionaryTest : MonoBehaviour
             }
             Profiler.EndSample();
         }
+
+        {
+            Profiler.BeginSample("readonly dictionary 3");
+            IReadOnlyDictionary<int, int> rodic = dic;
+            foreach (var e in rodic)
+            {
+                sum += e.Value;
+            }
+            Profiler.EndSample();
+        }
+
+        // 480byte
+        {
+            Profiler.BeginSample("IDictionary<int, int>");
+            for (int i = 0; i < 10; i++)
+            {
+                IDictionary<int, int> rodic = dic;
+                foreach (var e in rodic)
+                {
+                    sum += e.Value;
+                }
+            }
+            Profiler.EndSample();
+        }
+
+        for (int i = 0; i < 100; i++)
+        {
+            dic4.Add(i.ToString(), i.ToString());
+        }
+
+        // おそらくKeyValuePairがボックス化される
+        // 3.2KB
+        {
+            Profiler.BeginSample("IDictionary foreach");
+            IDictionary idic = dic4;
+            foreach (var e in idic)
+            {
+
+            }
+            Profiler.EndSample();
+        }
+
+        {
+            Profiler.BeginSample("Dictionary get_item");
+            for (int i = 0; i < 10000; i++)
+            {
+                if (dic4.ContainsKey("99"))
+                {
+                    var s = dic4["99"];
+                }
+            }
+            Profiler.EndSample();
+        }
+
+        {
+            Profiler.BeginSample("IDictionary get_item");
+            IDictionary idic = dic4;
+            for (int i = 0; i < 10000; i++)
+            {
+                if (idic.Contains("99"))
+                {
+                    var s = idic["99"];
+                }
+            }
+            Profiler.EndSample();
+        }
     }
 }
