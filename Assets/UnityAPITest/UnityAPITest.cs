@@ -21,6 +21,13 @@ public class UnityAPITest : MonoBehaviour
         }
     }
 
+    [System.Serializable]
+    class JsonTestClass
+    {
+        public int a;
+        public int b;
+    }
+
     void Run()
     {
         // 46byte
@@ -239,6 +246,27 @@ public class UnityAPITest : MonoBehaviour
         {
             Profiler.BeginSample("Camera.main 1");
             var camera = Camera.main;
+            Profiler.EndSample();
+        }
+
+        {
+            // 24byte
+            Profiler.BeginSample("JsonUtility object");
+            JsonTestClass json = new JsonTestClass();
+            json.a = 1;
+            json.b = 2;
+            Profiler.EndSample();
+
+            // 78byte
+            Profiler.BeginSample("JsonUtility.ToJson");
+            string text = JsonUtility.ToJson(json);
+            Profiler.EndSample();
+
+            Debug.Log(text);
+
+            // 24byte
+            Profiler.BeginSample("JsonUtility.FromJson");
+            var data = JsonUtility.FromJson<JsonTestClass>(text);
             Profiler.EndSample();
         }
     }
