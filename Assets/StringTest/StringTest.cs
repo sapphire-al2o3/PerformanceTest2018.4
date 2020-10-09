@@ -278,6 +278,8 @@ public class StringTest : MonoBehaviour
             Debug.Log(s);
         }
 
+        // 0は同じリテラルを返す
+        // 0byte
         {
             Profiler.BeginSample("int.ToString 0");
 
@@ -288,9 +290,12 @@ public class StringTest : MonoBehaviour
 
             int m = 0;
             string ss = m.ToString();
+            // true
             Debug.Log(object.ReferenceEquals(ss, s));
         }
 
+        // 1は文字列を生成して返す(.NET Coreでは1桁の数値はリテラルを返す)
+        // 28byte
         {
             Profiler.BeginSample("int.ToString 1");
 
@@ -302,6 +307,7 @@ public class StringTest : MonoBehaviour
 
             int m = 1;
             string ss = m.ToString();
+            // false
             Debug.Log(object.ReferenceEquals(ss, s));
         }
 
