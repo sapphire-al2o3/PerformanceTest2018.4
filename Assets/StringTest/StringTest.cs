@@ -232,6 +232,14 @@ public class StringTest : MonoBehaviour
             Profiler.EndSample();
         }
 
+        // 0byte
+        {
+            Profiler.BeginSample("String.ToString");
+            object o = s0;
+            string s = o.ToString();
+            Profiler.EndSample();
+        }
+
         {
             Profiler.BeginSample("IndexOf default");
             for (int i = 0; i < 1000; i++)
