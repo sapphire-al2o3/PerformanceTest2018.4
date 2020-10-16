@@ -84,13 +84,15 @@ public class AlignmentTest : MonoBehaviour
         byte c;
     }
 
+    // 24byte
     class C2
     {
-        byte a;
         int b;
-        short c;
+        byte a;
+        byte c;
     }
 
+    // 22byte
     [StructLayout(LayoutKind.Auto, Pack = 1)]
     class C3
     {
@@ -99,6 +101,7 @@ public class AlignmentTest : MonoBehaviour
         byte c;
     }
 
+    // 22byte
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
     class C4
     {
@@ -107,14 +110,14 @@ public class AlignmentTest : MonoBehaviour
         byte c;
     }
 
-    // 24byte
     class C5
     {
-		int b;
-		byte a;
+        byte a;
+        short b;
         byte c;
     }
 
+    // 48byte
     class C6
     {
         byte a;
@@ -127,6 +130,7 @@ public class AlignmentTest : MonoBehaviour
         int h;
     }
 
+    // 36byte
     class C7
     {
         int b;
