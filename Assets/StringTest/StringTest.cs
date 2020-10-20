@@ -34,26 +34,48 @@ public class StringTest : MonoBehaviour
         }
     }
 
-    string Int2StringFormat(int n, int d)
+    public static class IntToStringUtil
     {
-        char[] c = new char[d];
-        for (int i = d - 1; i >= 0; i--)
+        public static string Padding0(int n, int d)
         {
-            if (n > 0)
+            char[] c = new char[n < 0 ? d + 1 : d];
+            int s = 0;
+            if (n < 0)
             {
-                c[i] = (char)(n % 10 + '0');
-                n /= 10;
+                c[0] = '-';
+                n *= -1;
+                s = 1;
             }
-            else
+            for (int i = d + s - 1; i >= s; i--)
             {
-                c[i] = '0';
+                if (n > 0)
+                {
+                    c[i] = (char)(n % 10 + '0');
+                    n /= 10;
+                }
+                else
+                {
+                    c[i] = '0';
+                }
             }
+            return new string(c);
         }
-        return new string(c);
+    }
+
+    void Int2StringFormatTest(int n, int d)
+    {
+        Debug.Log($"{IntToStringUtil.Padding0(n, d)} : {n.ToString(new string('0', d))}");
     }
 
     void Start()
     {
+        Int2StringFormatTest(-0, 2);
+        Int2StringFormatTest(-100, 3);
+        Int2StringFormatTest(-123, 4);
+        Int2StringFormatTest(-123, 5);
+        Int2StringFormatTest(123, 5);
+        Int2StringFormatTest(123, 2);
+
         string s0 = "aabbccddeeff";
         string s1 = "aa,bb,ccddee";
 
@@ -185,7 +207,7 @@ public class StringTest : MonoBehaviour
         {
             Profiler.BeginSample("int -> string (ToString) 2");
             int i0 = 100;
-            string s = (100).ToString("0000");
+            string s = (i0).ToString("0000");
             Profiler.EndSample();
         }
 
@@ -211,7 +233,7 @@ public class StringTest : MonoBehaviour
         {
             Profiler.BeginSample("int -> string (Custom)");
             int i0 = 100;
-            string s = Int2StringFormat(i0, 4);
+            string s = IntToStringUtil.Padding0(i0, 4);
             Profiler.EndSample();
 
             Debug.Log(s);
