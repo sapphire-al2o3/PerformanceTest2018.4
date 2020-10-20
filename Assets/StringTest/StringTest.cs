@@ -34,6 +34,24 @@ public class StringTest : MonoBehaviour
         }
     }
 
+    string Int2StringFormat(int n, int d)
+    {
+        char[] c = new char[d];
+        for (int i = d - 1; i >= 0; i--)
+        {
+            if (n > 0)
+            {
+                c[i] = (char)(n % 10 + '0');
+                n /= 10;
+            }
+            else
+            {
+                c[i] = '0';
+            }
+        }
+        return new string(c);
+    }
+
     void Start()
     {
         string s0 = "aabbccddeeff";
@@ -163,12 +181,40 @@ public class StringTest : MonoBehaviour
             Profiler.EndSample();
         }
 
+        // 506byte
+        {
+            Profiler.BeginSample("int -> string (ToString) 2");
+            int i0 = 100;
+            string s = (100).ToString("0000");
+            Profiler.EndSample();
+        }
+
         // 84byte
         {
             Profiler.BeginSample("int -> string (Format)");
             int i0 = 100;
             string s = string.Format("{0}", i0);
             Profiler.EndSample();
+        }
+
+        // 0.7KB
+        {
+            Profiler.BeginSample("int -> string (Format) 2");
+            int i0 = 100;
+            string s = string.Format("{0:0000}", i0);
+            Profiler.EndSample();
+
+            Debug.Log(s);
+        }
+
+        // 74byte
+        {
+            Profiler.BeginSample("int -> string (Custom)");
+            int i0 = 100;
+            string s = Int2StringFormat(i0, 4);
+            Profiler.EndSample();
+
+            Debug.Log(s);
         }
 
         // 84byte
