@@ -293,6 +293,22 @@ public class StringTest : MonoBehaviour
             Profiler.EndSample();
         }
 
+        // 108byte
+        {
+            Profiler.BeginSample("concat int");
+            int i = 123;
+            string s = s0 + i;
+            Profiler.EndSample();
+        }
+
+        // 88byte
+        {
+            Profiler.BeginSample("concat int.ToString");
+            int i = 123;
+            string s = s0 + i.ToString();
+            Profiler.EndSample();
+        }
+
         // 0byte
         {
             Profiler.BeginSample("String.ToString");
