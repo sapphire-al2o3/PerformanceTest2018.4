@@ -343,6 +343,39 @@ public class StringTest : MonoBehaviour
             Profiler.EndSample();
         }
 
+        // 0は同じリテラルを返す
+        // 0byte
+        {
+            Profiler.BeginSample("int.ToString 0");
+
+            int n = 0;
+            string s = n.ToString();
+
+            Profiler.EndSample();
+
+            int m = 0;
+            string ss = m.ToString();
+            // true
+            Debug.Log(object.ReferenceEquals(ss, s));
+        }
+
+        // 1は文字列を生成して返す(.NET Coreでは1桁の数値はリテラルを返す)
+        // 28byte
+        {
+            Profiler.BeginSample("int.ToString 1");
+
+            int n = 1;
+
+            string s = n.ToString();
+
+            Profiler.EndSample();
+
+            int m = 1;
+            string ss = m.ToString();
+            // false
+            Debug.Log(object.ReferenceEquals(ss, s));
+        }
+
         int[] numbers =
         {
             0,
@@ -369,40 +402,6 @@ public class StringTest : MonoBehaviour
             string s = sb.ToString();
             Debug.Log(s);
         }
-
-        // 0は同じリテラルを返す
-        // 0byte
-        {
-            Profiler.BeginSample("int.ToString 0");
-
-            int n = 0;
-            string s = n.ToString();
-
-            Profiler.EndSample();
-
-            int m = 0;
-            string ss = m.ToString();
-            // true
-            Debug.Log(object.ReferenceEquals(ss, s));
-        }
-
-        // 1は文字列を生成して返す(.NET Coreでは1桁の数値はリテラルを返す)
-        // 28byte
-        {
-            Profiler.BeginSample("int.ToString 1");
-
-            int n = 1;
-            
-            string s = n.ToString();
-
-            Profiler.EndSample();
-
-            int m = 1;
-            string ss = m.ToString();
-            // false
-            Debug.Log(object.ReferenceEquals(ss, s));
-        }
-
 
         // 0byte
         {
