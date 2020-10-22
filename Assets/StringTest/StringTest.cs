@@ -60,11 +60,39 @@ public class StringTest : MonoBehaviour
             }
             return new string(c);
         }
+
+        public static string UnsafePadding0(int n, int d)
+        {
+            unsafe
+            {
+                char* c = stackalloc char[11];
+                int s = 0;
+                if (n < 0)
+                {
+                    c[0] = '-';
+                    n *= -1;
+                    s = 1;
+                }
+                for (int i = d + s - 1; i >= s; i--)
+                {
+                    if (n > 0)
+                    {
+                        c[i] = (char)(n % 10 + '0');
+                        n /= 10;
+                    }
+                    else
+                    {
+                        c[i] = '0';
+                    }
+                }
+                return new string(c, 0, d + s);
+            }
+        }
     }
 
     void Int2StringFormatTest(int n, int d)
     {
-        Debug.Log($"{IntToStringUtil.Padding0(n, d)} : {n.ToString(new string('0', d))}");
+        Debug.Log($"{IntToStringUtil.Padding0(n, d)} : {IntToStringUtil.UnsafePadding0(n, d)} : {n.ToString(new string('0', d))}");
     }
 
     void Start()
@@ -234,6 +262,36 @@ public class StringTest : MonoBehaviour
             Profiler.BeginSample("int -> string (Custom)");
             int i0 = 100;
             string s = IntToStringUtil.Padding0(i0, 4);
+            Profiler.EndSample();
+
+            Debug.Log(s);
+        }
+
+        // 34byte
+        {
+            Profiler.BeginSample("int -> string (Custom Unsafe)");
+            int i0 = 100;
+            string s = IntToStringUtil.UnsafePadding0(i0, 4);
+            Profiler.EndSample();
+
+            Debug.Log(s);
+        }
+
+        // 30byte
+        {
+            Profiler.BeginSample("int -> string Hex (ToString)");
+            int i0 = 100;
+            string s = i0.ToString("X");
+            Profiler.EndSample();
+
+            Debug.Log(s);
+        }
+
+        // 220byte
+        {
+            Profiler.BeginSample("int -> string Hex (Format)");
+            int i0 = 100;
+            string s = string.Format("{0:X}", i0);
             Profiler.EndSample();
 
             Debug.Log(s);
