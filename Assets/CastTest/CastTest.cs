@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Profiling;
@@ -84,5 +85,12 @@ public class CastTest : MonoBehaviour
             ForEach(array, x => x * 2);
         }
         Profiler.EndSample();
+
+        // 112byte
+        {
+            Profiler.BeginSample("delegate");
+            Func<int, int> func = Hoge;
+            Profiler.EndSample();
+        }
     }
 }
