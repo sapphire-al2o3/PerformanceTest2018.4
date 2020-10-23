@@ -269,5 +269,15 @@ public class UnityAPITest : MonoBehaviour
             var data = JsonUtility.FromJson<JsonTestClass>(text);
             Profiler.EndSample();
         }
+
+        {
+            Color32 color = Color.red;
+            // RGBA(255, 0, 0, 255)
+            Debug.Log(color.ToString());
+            // RGBA(FF, 0, 0, FF)
+            Debug.Log(color.ToString("X"));
+            // RGBA(ff, 0, 0, ff)
+            Debug.Log(color.ToString("x"));
+        }
     }
 }
