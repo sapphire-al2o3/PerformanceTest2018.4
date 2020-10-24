@@ -83,6 +83,56 @@ public class YieldTest : MonoBehaviour
         }
     }
 
+    IEnumerable<int> Even(int max)
+    {
+        for (int i = 1; i <= max; i++)
+        {
+            if (i % 2 == 0)
+            {
+                yield return i;
+            }
+        }
+        yield break;
+    }
+
+    public struct OddEnumerator
+    {
+        public OddEnumerator(int max)
+        {
+            _max = max;
+            _index = 1;
+            _current = _index;
+        }
+        int _index;
+        int _max;
+        int _current;
+
+        public bool MoveNext()
+        {
+            for (; _index <= _max; _index++)
+            {
+                if (_index % 2 == 1)
+                {
+                    _current = _index;
+                    _index++;
+                    return true;
+                }
+            }
+            return false;
+        }
+        public int Current { get { return _current; } }
+
+        public OddEnumerator GetEnumerator()
+        {
+            return this;
+        }
+    }
+
+    public OddEnumerator Odd(int max)
+    {
+        return new OddEnumerator(max);
+    }
+
     void Start ()
     {
         Profiler.BeginSample("YieldTest");
@@ -124,6 +174,24 @@ public class YieldTest : MonoBehaviour
         {
             Profiler.BeginSample("IEnumerator size 4");
             StartCoroutine(Test5(array));
+            Profiler.EndSample();
+        }
+
+        // 48byte
+        {
+            Profiler.BeginSample("IEnumerator foreach");
+            foreach (var e in Even(1000000))
+            {
+            }
+            Profiler.EndSample();
+        }
+
+        // 0byte
+        {
+            Profiler.BeginSample("IEnumerator foreach 2");
+            foreach (var e in Odd(1000000))
+            {
+            }
             Profiler.EndSample();
         }
     }
