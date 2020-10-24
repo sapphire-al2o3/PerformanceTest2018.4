@@ -7,6 +7,11 @@ using UnityEngine.Profiling;
 
 public class ArrayTest : MonoBehaviour
 {
+    struct CompStruct : IComparer<int>
+    {
+        public int Compare(int x, int y) => x - y;
+    }
+
     void Start()
     {
         // 40 byte
@@ -87,13 +92,15 @@ public class ArrayTest : MonoBehaviour
 
         // 88byte
         // デフォルトのキャパシティが4なので4つまではメモリ確保されない
-        Profiler.BeginSample("List<int> 2");
-        List<int> list2 = new List<int>();
-        list2.Add(1);
-        list2.Add(2);
-        list2.Add(3);
-        list2.Add(4);
-        Profiler.EndSample();
+        {
+            Profiler.BeginSample("List<int> 2");
+            List<int> list2 = new List<int>();
+            list2.Add(1);
+            list2.Add(2);
+            list2.Add(3);
+            list2.Add(4);
+            Profiler.EndSample();
+        }
 
         // 88byte
         Profiler.BeginSample("List<int>(4)");
@@ -137,6 +144,17 @@ public class ArrayTest : MonoBehaviour
             Array.Sort(array, (x, y) => x - y);
         }
         Profiler.EndSample();
+
+        // boxingとComparisionへのキャストが発生する
+        // 12.6KB
+        {
+            Profiler.BeginSample("Sort IComparer");
+            for (int i = 0; i < 100; i++)
+            {
+                Array.Sort(array, new CompStruct());
+            }
+            Profiler.EndSample();
+        }
 
 
         // 8.3Kbyte
@@ -183,7 +201,7 @@ public class ArrayTest : MonoBehaviour
             Profiler.EndSample();
         }
 
-        // IEnumeratorへのボックス化がおこる？
+        // IEnumeratorへのボックス化がおこる
         // 40byte
         {
             Profiler.BeginSample("foreach IList");
@@ -197,6 +215,7 @@ public class ArrayTest : MonoBehaviour
             Profiler.EndSample();
         }
 
+        // 0byte
         {
             Profiler.BeginSample("for IList");
             IList ilist = (IList)tmpList;
