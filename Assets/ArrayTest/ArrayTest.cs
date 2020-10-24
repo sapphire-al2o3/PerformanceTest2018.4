@@ -145,6 +145,13 @@ public class ArrayTest : MonoBehaviour
         }
         Profiler.EndSample();
 
+        Profiler.BeginSample("Sort null");
+        for (int i = 0; i < 100; i++)
+        {
+            Array.Sort<int>(array, 0, array.Length, null);
+        }
+        Profiler.EndSample();
+
         // boxingとComparisionへのキャストが発生する
         // 12.6KB
         {
@@ -225,6 +232,18 @@ public class ArrayTest : MonoBehaviour
                 str = (string)ilist[i];
             }
 
+            Profiler.EndSample();
+        }
+
+        // 10.9KB
+        {
+            List<int> list5 = new List<int>() { 3, 2, 1 };
+
+            Profiler.BeginSample("List.Sort");
+            for (int i = 0; i < 100; i++)
+            {
+                list5.Sort();
+            }
             Profiler.EndSample();
         }
     }
