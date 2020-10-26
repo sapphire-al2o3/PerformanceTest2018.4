@@ -28,6 +28,11 @@ public class UnityAPITest : MonoBehaviour
         public int b;
     }
 
+    void Receive()
+    {
+
+    }
+
     void Run()
     {
         // 46byte
@@ -278,6 +283,13 @@ public class UnityAPITest : MonoBehaviour
             Debug.Log(color.ToString("X"));
             // RGBA(ff, 0, 0, ff)
             Debug.Log(color.ToString("x"));
+        }
+
+        // 0byte
+        {
+            Profiler.BeginSample("SendMessage");
+            SendMessage("Receive");
+            Profiler.EndSample();
         }
     }
 }
