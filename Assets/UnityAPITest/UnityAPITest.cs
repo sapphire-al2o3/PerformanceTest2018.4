@@ -33,6 +33,16 @@ public class UnityAPITest : MonoBehaviour
 
     }
 
+    void ReceiveString(string s)
+    {
+
+    }
+
+    void ReceiveInt(int i)
+    {
+
+    }
+
     void Run()
     {
         // 46byte
@@ -289,6 +299,21 @@ public class UnityAPITest : MonoBehaviour
         {
             Profiler.BeginSample("SendMessage");
             SendMessage("Receive");
+            Profiler.EndSample();
+        }
+
+        // 48byte
+        {
+            Profiler.BeginSample("SendMessage string");
+            string text = "hoge";
+            SendMessage("ReceiveString", text);
+            Profiler.EndSample();
+        }
+
+        // 20byte
+        {
+            Profiler.BeginSample("SendMessage int");
+            SendMessage("ReceiveInt", 0, SendMessageOptions.RequireReceiver);
             Profiler.EndSample();
         }
     }
