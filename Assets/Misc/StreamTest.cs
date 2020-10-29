@@ -26,6 +26,8 @@ public class StreamTest : MonoBehaviour
                 bw.Write(f);
             }
 
+            Debug.Log(ms.Length);
+
             // 0byte
             using (new ProfilerScope("int"))
             {
@@ -33,12 +35,26 @@ public class StreamTest : MonoBehaviour
                 bw.Write(i);
             }
 
+            Debug.Log(ms.Length);
+
             // 0byte
             using (new ProfilerScope("float unsafe"))
             {
                 float f = 1.234f;
                 UnsafeWrite(bw, f);
             }
+
+            Debug.Log(ms.Length);
+
+            // 文字列書き込み用のバッファ(256byte)が確保される
+            // 440byte
+            using (new ProfilerScope("string"))
+            {
+                string str = "";
+                bw.Write(str);
+            }
+
+            Debug.Log(ms.Length);
 
             buffer = ms.GetBuffer();
         }
