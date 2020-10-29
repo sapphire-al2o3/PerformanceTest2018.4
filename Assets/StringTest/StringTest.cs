@@ -492,5 +492,37 @@ public class StringTest : MonoBehaviour
             string s = sb.ToString();
             Debug.Log(s);
         }
+
+        // 350byte
+        {
+            var sb = new System.Text.StringBuilder(100);
+            Profiler.BeginSample("StringBuilder bool lower");
+            bool t = true;
+            bool f = false;
+            for (int i = 0; i < 10; i++)
+            {
+                bool b = i % 2 == 0 ? t : f;
+                sb.Append(b.ToString().ToLower());
+            }
+            Profiler.EndSample();
+            string s = sb.ToString();
+            Debug.Log(s);
+        }
+
+        // 0byte
+        {
+            var sb = new System.Text.StringBuilder(100);
+            Profiler.BeginSample("StringBuilder bool lower literal");
+            bool t = true;
+            bool f = false;
+            for (int i = 0; i < 10; i++)
+            {
+                string b = i % 2 == 0 ? "true" : "false";
+                sb.Append(b);
+            }
+            Profiler.EndSample();
+            string s = sb.ToString();
+            Debug.Log(s);
+        }
     }
 }
