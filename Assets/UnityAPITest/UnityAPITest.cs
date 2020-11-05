@@ -197,6 +197,31 @@ public class UnityAPITest : MonoBehaviour
             Debug.Log(layerIndex);
         }
 
+        // 0byte
+        {
+            Profiler.BeginSample("Animator.StringToHash");
+            int hash = Animator.StringToHash("Test0");
+            Profiler.EndSample();
+        }
+
+        // 0byte
+        {
+            var animator = GetComponent<Animator>();
+
+            Profiler.BeginSample("Animator.GetCurrentAnimatorStateInfo");
+            var info = animator.GetCurrentAnimatorStateInfo(0);
+            Profiler.EndSample();
+        }
+
+        // 32byte
+        {
+            var animator = GetComponent<Animator>();
+
+            Profiler.BeginSample("Animator.GetCurrentAnimatorClipInfo");
+            var clipInfo = animator.GetCurrentAnimatorClipInfo(0);
+            Profiler.EndSample();
+        }
+
         // 42byte
         {
             Profiler.BeginSample("tag equals");
