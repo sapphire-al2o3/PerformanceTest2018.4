@@ -178,6 +178,25 @@ public class UnityAPITest : MonoBehaviour
             Profiler.EndSample();
         }
 
+        
+        {
+            var animator = GetComponent<Animator>();
+
+            // 46byte
+            Profiler.BeginSample("Animator.GetLayerName");
+            string layerName = animator.GetLayerName(0);
+            Profiler.EndSample();
+
+            // 0byte
+            Profiler.BeginSample("Animator.GetLayerIndex");
+            int layerIndex = animator.GetLayerIndex(layerName);
+            Profiler.EndSample();
+
+            // 存在しないレイヤーを指定した場合は-1
+            layerIndex = animator.GetLayerIndex("hoge");
+            Debug.Log(layerIndex);
+        }
+
         // 42byte
         {
             Profiler.BeginSample("tag equals");
