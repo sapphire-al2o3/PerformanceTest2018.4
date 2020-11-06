@@ -383,6 +383,28 @@ public class StringTest : MonoBehaviour
         }
 
         {
+            Profiler.BeginSample("string ==");
+            string a = "hoge";
+            string b = "fuga";
+            for (int i = 0; i < 1000; i++)
+            {
+                bool ret = a == b;
+            }
+            Profiler.EndSample();
+        }
+
+        {
+            Profiler.BeginSample("string.CompareTo");
+            string a = "hoge";
+            string b = "fuga";
+            for (int i = 0; i < 1000; i++)
+            {
+                bool ret = a.CompareTo(b) == 0;
+            }
+            Profiler.EndSample();
+        }
+
+        {
             Profiler.BeginSample("IndexOf default");
             for (int i = 0; i < 1000; i++)
             {
