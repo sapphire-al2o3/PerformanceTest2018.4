@@ -405,6 +405,17 @@ public class StringTest : MonoBehaviour
         }
 
         {
+            Profiler.BeginSample("string.Compare");
+            string a = "hoge";
+            string b = "fuga";
+            for (int i = 0; i < 1000; i++)
+            {
+                bool ret = string.Compare(a, b, System.StringComparison.Ordinal) == 0;
+            }
+            Profiler.EndSample();
+        }
+
+        {
             Profiler.BeginSample("IndexOf default");
             for (int i = 0; i < 1000; i++)
             {
