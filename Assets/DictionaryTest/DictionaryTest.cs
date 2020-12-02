@@ -280,5 +280,23 @@ public class DictionaryTest : MonoBehaviour
             }
             Profiler.EndSample();
         }
+
+        {
+            SortedDictionary<string, string> sortedDcit = new SortedDictionary<string, string>();
+            sortedDcit.Add("a", "a");
+            sortedDcit.Add("b", "b");
+            sortedDcit.Add("c", "c");
+
+            foreach (var pair in sortedDcit)
+            {
+            }
+
+            // 120byte
+            Profiler.BeginSample("SortedDictionary foreach");
+            foreach (var pair in sortedDcit)
+            {
+            }
+            Profiler.EndSample();
+        }
     }
 }
