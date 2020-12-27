@@ -577,5 +577,27 @@ public class StringTest : MonoBehaviour
             string s = sb.ToString();
             Debug.Log(s);
         }
+
+        // 0byte
+        {
+            var sb = new System.Text.StringBuilder();
+            Profiler.BeginSample("StringBuilder AppendFormat");
+            string msg = "hoge";
+            sb.AppendFormat("huga_{0}", msg);
+            Profiler.EndSample();
+            string s = sb.ToString();
+            Debug.Log(s);
+        }
+
+        // 44byte
+        {
+            var sb = new System.Text.StringBuilder();
+            Profiler.BeginSample("StringBuilder Append $");
+            string msg = "hoge";
+            sb.Append($"huga_{msg}");
+            Profiler.EndSample();
+            string s = sb.ToString();
+            Debug.Log(s);
+        }
     }
 }
