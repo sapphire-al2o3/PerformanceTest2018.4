@@ -190,7 +190,7 @@ public class StringTest : MonoBehaviour
         }
 
 
-        // 150Byte
+        // 150byte
         {
             Profiler.BeginSample("StringBuilder");
             var sb = new System.Text.StringBuilder();
@@ -199,6 +199,21 @@ public class StringTest : MonoBehaviour
                 sb.Append(num[i]);
             }
             string s = sb.ToString();
+            Profiler.EndSample();
+        }
+
+        // 32byte
+        {
+            Profiler.BeginSample("$3");
+            // string.Concatが呼ばれる
+            string s = $"{num[0]}{num[1]}{num[2]}";
+            Profiler.EndSample();
+        }
+
+        // 32byte
+        {
+            Profiler.BeginSample("Format3");
+            string s = string.Format("{0}{1}{2}", num[0], num[1], num[2]);
             Profiler.EndSample();
         }
 
