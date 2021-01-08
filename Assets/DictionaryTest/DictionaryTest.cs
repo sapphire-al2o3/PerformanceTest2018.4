@@ -131,11 +131,34 @@ public class DictionaryTest : MonoBehaviour
         dic2_0 += dic2[EnumType.C];
         Profiler.EndSample();
 
-        // 488byte
+        // 80byte
         Dictionary<int, int> dic1 = new Dictionary<int, int>();
         Profiler.BeginSample("dictionary<int, int>");
         dic1 = new Dictionary<int, int>();
         Profiler.EndSample();
+
+        // 0.8KB
+        {
+            Profiler.BeginSample("dictionary<string, int> x10");
+            for (int i = 0; i < 10; i++)
+            {
+                var t = new Dictionary<string, int>();
+            }
+            Profiler.EndSample();
+        }
+
+        // 2.2KB
+        {
+            Profiler.BeginSample("dictionary<string, int>(1) x10");
+            for (int i = 0; i < 10; i++)
+            {
+                // 80
+                var t = new Dictionary<string, int>();
+                // 44 + 104
+                t.Add("a", i);
+            }
+            Profiler.EndSample();
+        }
 
         Profiler.BeginSample("dictionary<int, int>.set_item");
         for (int i = 0; i < 100; i++)
