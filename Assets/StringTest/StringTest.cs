@@ -254,6 +254,14 @@ public class StringTest : MonoBehaviour
             Profiler.EndSample();
         }
 
+        // 34byte
+        {
+            Profiler.BeginSample("int -> string (ToString) 3");
+            int i0 = 100;
+            string s = (i0).ToString("D4");
+            Profiler.EndSample();
+        }
+
         // 84byte
         {
             Profiler.BeginSample("int -> string (Format)");
