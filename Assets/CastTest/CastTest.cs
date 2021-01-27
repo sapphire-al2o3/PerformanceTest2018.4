@@ -92,5 +92,23 @@ public class CastTest : MonoBehaviour
             Func<int, int> func = Hoge;
             Profiler.EndSample();
         }
+
+        // 48byte
+        {
+            Profiler.BeginSample("nullable");
+            int? x = null;
+            if (x == null)
+                x = 10;
+            Profiler.EndSample();
+        }
+
+        // 0byte
+        {
+            Profiler.BeginSample("nullable 2");
+            int? x = null;
+            if (x == null)
+                x = 10;
+            Profiler.EndSample();
+        }
     }
 }
