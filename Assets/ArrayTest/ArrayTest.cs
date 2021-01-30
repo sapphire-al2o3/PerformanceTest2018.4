@@ -246,5 +246,47 @@ public class ArrayTest : MonoBehaviour
             }
             Profiler.EndSample();
         }
+
+        // 32byte
+        {
+            string[] array2 = new string[10000];
+            Profiler.BeginSample("Array foreach");
+            
+            var array3 = (Array)array2;
+            
+            foreach (var e in array3)
+            {
+                var ss = (string)e;
+            }
+            Profiler.EndSample();
+        }
+
+        // 0byte
+        // foreachよりも遅い
+        {
+            string[] array2 = new string[10000];
+            Profiler.BeginSample("Array for");
+
+            var array3 = (Array)array2;
+            int l = array3.Length;
+            for (int i = 0; i < l; i++)
+            {
+                var ss = (string)array3.GetValue(i);
+            }
+            Profiler.EndSample();
+        }
+
+        {
+            string[] array2 = new string[10000];
+            Profiler.BeginSample("IList for");
+
+            var array3 = (IList)array2;
+            int l = array3.Count;
+            for (int i = 0; i < l; i++)
+            {
+                var ss = (string)array3[i];
+            }
+            Profiler.EndSample();
+        }
     }
 }
