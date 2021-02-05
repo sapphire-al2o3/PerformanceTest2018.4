@@ -360,5 +360,15 @@ public class UnityAPITest : MonoBehaviour
             SendMessage("ReceiveInt", 0, SendMessageOptions.RequireReceiver);
             Profiler.EndSample();
         }
+
+        // 15.4Kbyte
+        {
+            Profiler.BeginSample("Application.persistentDataPath");
+            for (int i = 0; i < 100; i++)
+            {
+                string path = Application.persistentDataPath;
+            }
+            Profiler.EndSample();
+        }
     }
 }
