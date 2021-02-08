@@ -14,17 +14,17 @@ public class ArrayTest : MonoBehaviour
 
     void Start()
     {
-        // 40 byte
+        // 32 byte
         Profiler.BeginSample("int[0]");
         int[] b = new int[0];
         Profiler.EndSample();
 
-        // 44 byte
+        // 36 byte
         Profiler.BeginSample("int[1]");
         int[] a = new int[1];
         Profiler.EndSample();
 
-        // 440 byte
+        // 432 byte
         Profiler.BeginSample("int[]");
         int[] array = new int[10 * 10];
 
@@ -37,8 +37,14 @@ public class ArrayTest : MonoBehaviour
         }
         Profiler.EndSample();
 
+        // 32 byte
+        {
+            Profiler.BeginSample("long[0]");
+            long[] l = new long[0];
+            Profiler.EndSample();
+        }
 
-        // 488 byte
+        // 496 byte
         Profiler.BeginSample("int[,]");
         int[,] array0 = new int[10, 10];
 
@@ -51,7 +57,7 @@ public class ArrayTest : MonoBehaviour
         }
         Profiler.EndSample();
 
-        // 0.9 Kbyte
+        // 0.8 Kbyte
         Profiler.BeginSample("int[][]");
         int[][] array1 = new int[10][];
 
