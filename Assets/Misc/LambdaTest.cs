@@ -21,6 +21,27 @@ public class LambdaTest : MonoBehaviour
         return func(x);
     }
 
+    List<int> list = new List<int>();
+
+    List<int> RemoveList0(List<int> list, int v)
+    {
+        if (list != null && list.Count > 0)
+        {
+            return list.FindAll(x => x != v);
+        }
+        return null;
+    }
+
+    List<int> RemoveList1(List<int> list, int v)
+    {
+        if (list != null && list.Count > 0)
+        {
+            int t = v;
+            return list.FindAll(x => x != t);
+        }
+        return null;
+    }
+
     void Start()
     {
         // 10.9KB
@@ -81,6 +102,26 @@ public class LambdaTest : MonoBehaviour
             }
             Profiler.EndSample();
             Debug.Log(k);
+        }
+
+        // 2.0KB
+        {
+            Profiler.BeginSample("capture test 0");
+            for (int i = 0; i < 100; i++)
+            {
+                RemoveList0(null, i);
+            }
+            Profiler.EndSample();
+        }
+
+        // 0byte
+        {
+            Profiler.BeginSample("capture test 1");
+            for (int i = 0; i < 100; i++)
+            {
+                RemoveList1(null, i);
+            }
+            Profiler.EndSample();
         }
     }
 }
