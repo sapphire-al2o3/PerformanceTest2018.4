@@ -36,6 +36,7 @@ public class YieldTest : MonoBehaviour
     {
         while (true)
         {
+            // 20byte
             yield return 0;
         }
     }
@@ -140,7 +141,7 @@ public class YieldTest : MonoBehaviour
         Profiler.EndSample();
 
         // StartCoroutine(Test0());
-        //StartCoroutine(Test1());
+        StartCoroutine(Test1());
 
         // 64byte
         {
