@@ -125,11 +125,41 @@ public class DictionaryTest : MonoBehaviour
         }
         Profiler.EndSample();
 
-        Profiler.BeginSample("dictionary<EnumType, int>.get_item");
-        int dic2_0 = dic2[EnumType.A];
-        dic2_0 += dic2[EnumType.B];
-        dic2_0 += dic2[EnumType.C];
-        Profiler.EndSample();
+        {
+            Profiler.BeginSample("dictionary<EnumType, int>.get_item");
+            for (int i = 0; i < 100; i++)
+            {
+                int dic2_0 = dic2[EnumType.A];
+                dic2_0 += dic2[EnumType.B];
+                dic2_0 += dic2[EnumType.C];
+            }
+            Profiler.EndSample();
+        }
+
+        {
+            Profiler.BeginSample("dictionary<EnumType, int>.ContainsKey");
+            for (int i = 0; i< 100; i++)
+            {
+                if (dic2.ContainsKey(EnumType.A))
+                {
+
+                }
+            }
+            Profiler.EndSample();
+        }
+
+        {
+            Profiler.BeginSample("dictionary<EnumType, int> foreach");
+            for (int i = 0; i < 100; i++)
+            {
+                foreach (var pair in dic2)
+                {
+                    EnumType k = pair.Key; 
+                    int v = pair.Value;
+                }
+            }
+            Profiler.EndSample();
+        }
 
         // 80byte
         Dictionary<int, int> dic1 = new Dictionary<int, int>();
@@ -164,12 +194,21 @@ public class DictionaryTest : MonoBehaviour
         for (int i = 0; i < 100; i++)
         {
             dic1[0] = 0;
+            dic1[1] = 1;
+            dic1[2] = 2;
         }
         Profiler.EndSample();
 
-        Profiler.BeginSample("dictionary<int, int>.get_item");
-        int dic1_0 = dic1[0];
-        Profiler.EndSample();
+        {
+            Profiler.BeginSample("dictionary<int, int>.get_item");
+            for (int i = 0; i < 100; i++)
+            {
+                int dic1_0 = dic1[0];
+                dic1_0 += dic1[1];
+                dic1_0 += dic1[2];
+            }
+            Profiler.EndSample();
+        }
 
         // 217.3KB
         Profiler.BeginSample("dictionary<int, int>(10000)");
