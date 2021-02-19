@@ -107,6 +107,35 @@ public class StringTest : MonoBehaviour
         string s0 = "aabbccddeeff";
         string s1 = "aa,bb,ccddee";
 
+        {
+            Profiler.BeginSample("char[] 1");
+            char[] txt = new char[1] { 'a' };
+            Profiler.EndSample();
+
+            // 28byte
+            Profiler.BeginSample("string 1");
+            string s = new string(txt);
+            Profiler.EndSample();
+
+            // 28byte
+            Profiler.BeginSample("string 1 copy");
+            string ss = string.Copy(s);
+            Profiler.EndSample();
+        }
+
+        {
+            char[] txt = new char[10];
+            for (int i = 0; i < txt.Length; i++)
+            {
+                txt[i] = '0';
+            }
+
+            // 46byte
+            Profiler.BeginSample("string 10");
+            string s = new string(txt);
+            Profiler.EndSample();
+        }
+
         // 90byte
         Profiler.BeginSample("split 1");
         string[] array = s0.Split(',');
