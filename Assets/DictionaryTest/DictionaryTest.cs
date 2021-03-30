@@ -138,7 +138,7 @@ public class DictionaryTest : MonoBehaviour
 
         {
             Profiler.BeginSample("dictionary<EnumType, int>.ContainsKey");
-            for (int i = 0; i< 100; i++)
+            for (int i = 0; i < 100; i++)
             {
                 if (dic2.ContainsKey(EnumType.A))
                 {
@@ -154,7 +154,7 @@ public class DictionaryTest : MonoBehaviour
             {
                 foreach (var pair in dic2)
                 {
-                    EnumType k = pair.Key; 
+                    EnumType k = pair.Key;
                     int v = pair.Value;
                 }
             }
@@ -361,42 +361,42 @@ public class DictionaryTest : MonoBehaviour
             Profiler.EndSample();
         }
 
-		{
-			Profiler.BeginSample("Dictionary<string, int>.ctor");
-			Dictionary<string, int> d = new Dictionary<string, int>(10000);
-			Profiler.EndSample();
-			for (int i = 0; i < 1000; i++)
-			{
-				d.Add(i.ToString(), i);
-			}
+        {
+            Profiler.BeginSample("Dictionary<string, int>.ctor");
+            Dictionary<string, int> d = new Dictionary<string, int>(10000);
+            Profiler.EndSample();
+            for (int i = 0; i < 1000; i++)
+            {
+                d.Add(i.ToString(), i);
+            }
 
-			Profiler.BeginSample("Dictionary<string, int>.get");
-			for (int i = 0; i < 10000; i++)
-			{
-				string k = "500";
-				int v = d[k];
-				v += d[k];
-			}
-			Profiler.EndSample();
-		}
+            Profiler.BeginSample("Dictionary<string, int>.get");
+            for (int i = 0; i < 10000; i++)
+            {
+                string k = "500";
+                int v = d[k];
+                v += d[k];
+            }
+            Profiler.EndSample();
+        }
 
-		{
-			Profiler.BeginSample("Dictionary<object, int>.ctor");
-			Dictionary<object, int> d = new Dictionary<object, int>(10000);
-			Profiler.EndSample();
-			for (int i = 0; i < 1000; i++)
-			{
-				d.Add(i.ToString(), i);
-			}
+        {
+            Profiler.BeginSample("Dictionary<object, int>.ctor");
+            Dictionary<object, int> d = new Dictionary<object, int>(10000);
+            Profiler.EndSample();
+            for (int i = 0; i < 1000; i++)
+            {
+                d.Add(i.ToString(), i);
+            }
 
-			Profiler.BeginSample("Dictionary<object, int>.get");
-			for (int i = 0; i < 10000; i++)
-			{
-				string k = "500";
-				int v = d[k];
-				v += d[k];
-			}
-			Profiler.EndSample();
-		}
-	}
+            Profiler.BeginSample("Dictionary<object, int>.get");
+            for (int i = 0; i < 10000; i++)
+            {
+                string k = "500";
+                int v = d[k];
+                v += d[k];
+            }
+            Profiler.EndSample();
+        }
+    }
 }
