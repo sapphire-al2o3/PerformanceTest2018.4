@@ -57,5 +57,17 @@ public class FileTest : MonoBehaviour
 
             Debug.Log(exists);
         }
+
+        // 20.0KB
+        {
+            Profiler.BeginSample("GetDirectories *");
+            string[] directories = Directory.GetDirectories(dir, "*", SearchOption.TopDirectoryOnly);
+            Profiler.EndSample();
+
+            foreach (var e in directories)
+            {
+                Debug.Log(e);
+            }
+        }
     }
 }
