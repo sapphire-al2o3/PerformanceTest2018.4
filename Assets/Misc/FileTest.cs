@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Profiling;
 using System.IO;
+using System.Linq;
 
 public class FileTest : MonoBehaviour
 {
@@ -62,6 +63,18 @@ public class FileTest : MonoBehaviour
         {
             Profiler.BeginSample("GetDirectories *");
             string[] directories = Directory.GetDirectories(dir, "*", SearchOption.TopDirectoryOnly);
+            Profiler.EndSample();
+
+            foreach (var e in directories)
+            {
+                Debug.Log(e);
+            }
+        }
+
+        // 19.9KB
+        {
+            Profiler.BeginSample("EnumerateDirectories");
+            string[] directories = Directory.EnumerateDirectories(dir, "*", SearchOption.TopDirectoryOnly).ToArray();
             Profiler.EndSample();
 
             foreach (var e in directories)
