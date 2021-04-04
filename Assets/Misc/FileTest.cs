@@ -59,6 +59,18 @@ public class FileTest : MonoBehaviour
             Debug.Log(exists);
         }
 
+        // 20.2KB
+        {
+            Profiler.BeginSample("GetFiles");
+            string[] files = Directory.GetFiles(dir);
+            Profiler.EndSample();
+
+            foreach (var e in files)
+            {
+                Debug.Log(e);
+            }
+        }
+
         // 20.0KB
         {
             Profiler.BeginSample("GetDirectories *");
@@ -78,6 +90,18 @@ public class FileTest : MonoBehaviour
             Profiler.EndSample();
 
             foreach (var e in directories)
+            {
+                Debug.Log(e);
+            }
+        }
+
+        // 21.4KB
+        {
+            Profiler.BeginSample("GetFileSystemEntries");
+            string[] files = Directory.GetFileSystemEntries(dir);
+            Profiler.EndSample();
+
+            foreach (var e in files)
             {
                 Debug.Log(e);
             }
