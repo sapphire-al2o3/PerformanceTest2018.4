@@ -59,6 +59,16 @@ public class FileTest : MonoBehaviour
             Debug.Log(exists);
         }
 
+        // 1.1KB
+        {
+            Profiler.BeginSample("Exists FileInfo");
+            FileInfo fi = new FileInfo("file");
+            bool exists = fi.Exists;
+            Profiler.EndSample();
+
+            Debug.Log(exists);
+        }
+
         // 20.2KB
         {
             Profiler.BeginSample("GetFiles");
