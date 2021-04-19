@@ -218,7 +218,6 @@ public class StringTest : MonoBehaviour
             Profiler.EndSample();
         }
 
-
         // 150byte
         {
             Profiler.BeginSample("StringBuilder");
@@ -375,6 +374,14 @@ public class StringTest : MonoBehaviour
         {
             Profiler.BeginSample("join");
             string s = string.Join(",", num);
+            Profiler.EndSample();
+        }
+
+        // 88byte
+        {
+            List<string> list = new List<string>(num);
+            Profiler.BeginSample("join List");
+            string s = string.Join(",", list);
             Profiler.EndSample();
         }
 
