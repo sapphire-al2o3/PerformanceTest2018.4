@@ -123,5 +123,19 @@ public class LambdaTest : MonoBehaviour
             }
             Profiler.EndSample();
         }
+
+        // 32byte
+        {
+            Profiler.BeginSample("anonymous type");
+            var a = new
+            {
+                A = 100,
+                B = "hoge"
+            };
+            int i = a.A;
+            string j = a.B;
+
+            Profiler.EndSample();
+        }
     }
 }
