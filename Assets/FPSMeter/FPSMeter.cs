@@ -4,34 +4,61 @@ using UnityEngine;
 
 public class FPSMeter : MonoBehaviour
 {
-	[SerializeField]
-	float targetFrameTime = 0.0033f;
-	[SerializeField]
-	Color overColor;
+    [SerializeField]
+    float targetFrameRate = 60.0f;
+    [SerializeField]
+    Color overColor;
 
-	float frameDeltaTime = 0.0f;
-	float prevTime = 0.0f;
-	Vector4 size;
-	Material mat;
+    [SerializeField]
+    float overFrameRate = 30.0f;
 
-	int sizeID;
+    float frameDeltaTime = 0.0f;
+    float prevTime = 0.0f;
+    Vector4 size;
+    Material mat;
 
-	void Start()
-	{
-		sizeID = Shader.PropertyToID("_Size");
-		mat = GetComponent<Renderer>().material;
-		size = mat.GetVector(sizeID);
-		size.x = 1.0f;
-		mat.SetVector(sizeID, size);
-	}
+    [SerializeField]
+    float interval = 0.2f;
+    float elapsed = 0.0f;
+    int frame = 0;
 
-	void Update()
-	{
-		float currentTime = Time.realtimeSinceStartup;
-		frameDeltaTime = currentTime - prevTime;
-		prevTime = currentTime;
+    Color defaultColor;
 
-		size.x = frameDeltaTime / targetFrameTime;
-		mat.SetVector(sizeID, size);
-	}
+    int sizeID;
+
+    void Start()
+    {
+        sizeID = Shader.PropertyToID("_Size");
+        mat = GetComponent<Renderer>().material;
+        size = mat.GetVector(sizeID);
+        size.x = 1.0f;
+        mat.SetVector(sizeID, size);
+        defaultColor = mat.GetColor("_Color");
+    }
+
+    void Update()
+    {
+        float currentTime = Time.realtimeSinceStartup;
+        frameDeltaTime = currentTime - prevTime;
+        prevTime = currentTime;
+        elapsed += frameDeltaTime;
+        frame++;
+
+        if (elapsed < interval)
+        {
+            return;
+        }
+
+        float fps = frame / elapsed;
+
+        size.x = fps / targetFrameRate * 0.5f;
+        mat.SetVector(sizeID, size);
+
+        //Debug.Log(frame / elapsed);
+
+        mat.SetColor("_Color", fps < overFrameRate ? overColor : defaultColor);
+
+        frame = 0;
+        elapsed = 0.0f;
+    }
 }
