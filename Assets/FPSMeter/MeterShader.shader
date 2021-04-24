@@ -32,13 +32,13 @@
 			};
 
 			fixed4 _Color;
-			float2 _Size;
+			float4 _Size;
 			
 			v2f vert (appdata v)
 			{
 				v2f o;
 				float2 p = v.uv;
-				p *= _Size;
+				p = p * _Size.xy + _Size.zw;
 				o.vertex = float4((p * 2.0 - 1.0), 1.0, 1.0);
 				return o;
 			}
