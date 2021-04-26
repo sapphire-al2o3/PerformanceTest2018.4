@@ -49,14 +49,14 @@ public class FPSMeter : MonoBehaviour
             return;
         }
 
-        float fps = frame / elapsed;
+        float time = elapsed / frame;
 
-        size.x = fps / targetFrameRate * 0.5f;
+        size.x = time * targetFrameRate * 0.5f;
         mat.SetVector(sizeID, size);
 
         //Debug.Log(frame / elapsed);
 
-        mat.SetColor("_Color", fps < overFrameRate ? overColor : defaultColor);
+        mat.SetColor("_Color", time > 1.0f / overFrameRate ? overColor : defaultColor);
 
         frame = 0;
         elapsed = 0.0f;
