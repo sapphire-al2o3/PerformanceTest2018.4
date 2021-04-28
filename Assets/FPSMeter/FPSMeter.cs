@@ -25,6 +25,7 @@ public class FPSMeter : MonoBehaviour
     Color defaultColor;
 
     int sizeID;
+    int colorID;
 
     void Start()
     {
@@ -33,7 +34,8 @@ public class FPSMeter : MonoBehaviour
         size = mat.GetVector(sizeID);
         size.x = 1.0f;
         mat.SetVector(sizeID, size);
-        defaultColor = mat.GetColor("_Color");
+        colorID = Shader.PropertyToID("_Color");
+        defaultColor = mat.GetColor(colorID);
     }
 
     void Update()
@@ -56,7 +58,7 @@ public class FPSMeter : MonoBehaviour
 
         //Debug.Log(frame / elapsed);
 
-        mat.SetColor("_Color", time > 1.0f / overFrameRate ? overColor : defaultColor);
+        mat.SetColor(colorID, time > 1.0f / overFrameRate ? overColor : defaultColor);
 
         frame = 0;
         elapsed = 0.0f;
