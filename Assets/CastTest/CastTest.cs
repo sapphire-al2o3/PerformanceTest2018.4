@@ -14,7 +14,16 @@ public class CastTest : MonoBehaviour
         Num3
     }
 
-    public int Hoge(int x) => x * 2;
+    [Flags]
+    enum EnumFlags
+    {
+        Num0,
+        Num1,
+        Num2,
+        Num3
+    }
+
+	public int Hoge(int x) => x * 2;
 
     public int Hoge2(int x)
     {
@@ -108,6 +117,14 @@ public class CastTest : MonoBehaviour
             int? x = null;
             if (x == null)
                 x = 10;
+            Profiler.EndSample();
+        }
+
+        // 0byte
+        {
+            Profiler.BeginSample("enum flags");
+            EnumFlags flags = EnumFlags.Num1 | EnumFlags.Num2;
+            flags.HasFlag(EnumFlags.Num1);
             Profiler.EndSample();
         }
     }
