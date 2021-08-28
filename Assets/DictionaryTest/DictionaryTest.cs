@@ -26,13 +26,30 @@ public class EnumTypeComparer : IEqualityComparer<EnumType>
     }
 }
 
+public struct ReadOnlyDictionaryWrapper<TKey, TValue>
+{
+    Dictionary<TKey, TValue> _dict;
+
+    public ReadOnlyDictionaryWrapper(Dictionary<TKey, TValue> dict)
+    {
+        _dict = dict;
+    }
+
+    public TValue this[TKey key] => _dict[key];
+
+    public Dictionary<TKey, TValue>.Enumerator GetEnumerator()
+    {
+        return _dict.GetEnumerator();
+    }
+}
+
 public class DictionaryTest : MonoBehaviour
 {
 
     void Start()
     {
         Dictionary<int, int> dic = new Dictionary<int, int>();
-
+        
         for (int i = 0; i < 10000; i++)
         {
             dic.Add(i, i);
@@ -257,7 +274,7 @@ public class DictionaryTest : MonoBehaviour
 
         // 96B
         {
-            Profiler.BeginSample("readonly dictionary");
+            Profiler.BeginSample("ReadOnlyDictionary");
             var rodic = new System.Collections.ObjectModel.ReadOnlyDictionary<int, int>(dic);
             foreach (var e in rodic)
             {
@@ -266,10 +283,9 @@ public class DictionaryTest : MonoBehaviour
             Profiler.EndSample();
         }
 
-        // 48B
         {
-            Profiler.BeginSample("readonly dictionary 2");
-            IReadOnlyDictionary<int, int> rodic = dic;
+            Profiler.BeginSample("ReadOnlyDictionary 2");
+            var rodic = new System.Collections.ObjectModel.ReadOnlyDictionary<int, int>(dic);
             foreach (var e in rodic)
             {
                 sum += e.Value;
@@ -277,12 +293,30 @@ public class DictionaryTest : MonoBehaviour
             Profiler.EndSample();
         }
 
+        // 480Byte
         {
-            Profiler.BeginSample("readonly dictionary 3");
-            IReadOnlyDictionary<int, int> rodic = dic;
-            foreach (var e in rodic)
+            Profiler.BeginSample("IReadOnlyDictionary");
+            for (int i = 0; i < 10; i++)
             {
-                sum += e.Value;
+                IReadOnlyDictionary<int, int> rodic = dic;
+                foreach (var e in rodic)
+                {
+                    sum += e.Value;
+                }
+            }
+            Profiler.EndSample();
+        }
+
+        // 48byte
+        {
+            Profiler.BeginSample("ReadOnlyDictionaryWrapper");
+            for (int i = 0; i < 10; i++)
+            {
+                var rodic = new ReadOnlyDictionaryWrapper<int, int>(dic);
+                foreach (var e in rodic)
+                {
+                    sum += e.Value;
+                }
             }
             Profiler.EndSample();
         }
