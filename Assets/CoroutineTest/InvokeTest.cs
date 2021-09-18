@@ -5,9 +5,11 @@ using UnityEngine.Profiling;
 
 public class InvokeTest : MonoBehaviour
 {
+    // FixedUpdateのタイミングで呼ばれる
     void Func()
     {
-
+        Profiler.BeginSample("Invoke Func");
+        Profiler.EndSample();
     }
 
     void Start()
