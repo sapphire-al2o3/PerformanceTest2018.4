@@ -12,6 +12,50 @@ public class ArrayTest : MonoBehaviour
         public int Compare(int x, int y) => x - y;
     }
 
+    class DefaultInitCollection : ICollection<int>
+    {
+        int _size = 0;
+        public DefaultInitCollection(int size) => _size = size;
+
+        public int Count => 1000;
+
+        public bool IsReadOnly => throw new NotImplementedException();
+
+        public void Add(int item)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Clear()
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool Contains(int item)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void CopyTo(int[] array, int arrayIndex)
+        {
+        }
+
+        public IEnumerator<int> GetEnumerator()
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool Remove(int item)
+        {
+            throw new NotImplementedException();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            throw new NotImplementedException();
+        }
+    }
+
     void Start()
     {
         // 32 byte
@@ -193,6 +237,54 @@ public class ArrayTest : MonoBehaviour
                 list5.Add(i);
             }
 
+            Profiler.EndSample();
+        }
+
+        // リストをデフォルト値で初期化
+        // 4.0KB
+        {
+            Profiler.BeginSample("List init 0 for");
+            List<int> list5 = new List<int>(1000);
+            for (int i = 0; i < 1000; i++)
+            {
+                list5.Add(0);
+            }
+            Profiler.EndSample();
+        }
+
+        // 7.9KB
+        {
+            Profiler.BeginSample("List init 0 array");
+            List<int> list5 = new List<int>(new int[1000]);
+            Profiler.EndSample();
+        }
+
+        // 8.4KB
+        {
+            Profiler.BeginSample("List init 0 enumerable");
+            List<int> list5 = new List<int>(Enumerable.Repeat(0, 1000));
+            Profiler.EndSample();
+        }
+
+        // 4.0KB
+        {
+            Profiler.BeginSample("List init 0 enumerable.ToList");
+            List<int> list5 = Enumerable.Repeat(0, 1000).ToList();
+            Profiler.EndSample();
+        }
+
+        // 4.0KB
+        {
+            Profiler.BeginSample("List init 0 enumerable AddRange");
+            List<int> list5 = new List<int>(1000);
+            list5.AddRange(Enumerable.Repeat(0, 1000));
+            Profiler.EndSample();
+        }
+
+        // 4.0KB
+        {
+            Profiler.BeginSample("List init 0 Collection");
+            List<int> list5 = new List<int>(new DefaultInitCollection(1000));
             Profiler.EndSample();
         }
 
