@@ -171,36 +171,57 @@ public class ArrayTest : MonoBehaviour
 
         // 10.9KB
         // Comparer.Compare -> Comparisionのキャストが発生する
-        Profiler.BeginSample("Sort");
-        for (int i = 0; i < 100; i++)
         {
-            Array.Sort(array);
+            Profiler.BeginSample("Sort");
+            for (int i = 0; i < 100; i++)
+            {
+                Array.Sort(array);
+            }
+            Profiler.EndSample();
         }
-        Profiler.EndSample();
+
+        // 0byte
+        // 要素数が0だと比較がないのでキャストも発生しない
+        {
+            int[] array2 = new int[0];
+            Profiler.BeginSample("Sort 0");
+            for (int i = 0; i < 100; i++)
+            {
+                Array.Sort(array2);
+            }
+            Profiler.EndSample();
+        }
 
         // 10.9KB
-        Profiler.BeginSample("Sort Default");
-        var comparer = Comparer<int>.Default;
-        for (int i = 0; i < 100; i++)
         {
-            Array.Sort(array, comparer);
+            Profiler.BeginSample("Sort Default");
+            var comparer = Comparer<int>.Default;
+            for (int i = 0; i < 100; i++)
+            {
+                Array.Sort(array, comparer);
+            }
+            Profiler.EndSample();
         }
-        Profiler.EndSample();
 
         // 112byte
-        Profiler.BeginSample("Sort Lambda");
-        for (int i = 0; i < 100; i++)
         {
-            Array.Sort(array, (x, y) => x - y);
+            Profiler.BeginSample("Sort Lambda");
+            for (int i = 0; i < 100; i++)
+            {
+                Array.Sort(array, (x, y) => x - y);
+            }
+            Profiler.EndSample();
         }
-        Profiler.EndSample();
 
-        Profiler.BeginSample("Sort null");
-        for (int i = 0; i < 100; i++)
+        // 10.9KB
         {
-            Array.Sort<int>(array, 0, array.Length, null);
+            Profiler.BeginSample("Sort null");
+            for (int i = 0; i < 100; i++)
+            {
+                Array.Sort<int>(array, 0, array.Length, null);
+            }
+            Profiler.EndSample();
         }
-        Profiler.EndSample();
 
         // boxingとComparisionへのキャストが発生する
         // 12.6KB
@@ -209,6 +230,22 @@ public class ArrayTest : MonoBehaviour
             for (int i = 0; i < 100; i++)
             {
                 Array.Sort(array, new CompStruct());
+            }
+            Profiler.EndSample();
+        }
+
+        // 10.9KB
+        {
+            List<int> list5 = new List<int>();
+            for (int i = 0; i < 10; i++)
+            {
+                list5.Add(i);
+            }
+
+            Profiler.BeginSample("Sort List");
+            for (int i = 0; i < 100; i++)
+            {
+                list5.Sort();
             }
             Profiler.EndSample();
         }
