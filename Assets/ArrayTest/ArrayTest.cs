@@ -136,9 +136,11 @@ public class ArrayTest : MonoBehaviour
 
         // 76byte
         // 32(Listのサイズ) + 44(int[1]のサイズ)
-        Profiler.BeginSample("List<int>(1)");
-        list = new List<int>(1);
-        Profiler.EndSample();
+        {
+            Profiler.BeginSample("List<int>(1)");
+            list = new List<int>(1);
+            Profiler.EndSample();
+        }
 
         // 88byte
         // デフォルトのキャパシティが4なので4つまではメモリ確保されない
@@ -153,21 +155,27 @@ public class ArrayTest : MonoBehaviour
         }
 
         // 88byte
-        Profiler.BeginSample("List<int>(4)");
-        List<int> list3 = new List<int>(4);
-        Profiler.EndSample();
+        {
+            Profiler.BeginSample("List<int>(4)");
+            List<int> list3 = new List<int>(4);
+            Profiler.EndSample();
+        }
 
         // 78.2KB
         // 32 + 40 + 10000 * 8
-        Profiler.BeginSample("List<string>(10000)");
-        List<string> list4 = new List<string>(10000);
-        Profiler.EndSample();
+        {
+            Profiler.BeginSample("List<string>(10000)");
+            List<string> list4 = new List<string>(10000);
+            Profiler.EndSample();
+        }
 
-        Func<int, int> orderFunc = x => x;
         // 488byte
-        Profiler.BeginSample("OrderBy");
-        array.OrderBy(orderFunc);
-        Profiler.EndSample();
+        {
+            Func<int, int> orderFunc = x => x;
+            Profiler.BeginSample("OrderBy");
+            array.OrderBy(orderFunc);
+            Profiler.EndSample();
+        }
 
         // 10.9KB
         // Comparer.Compare -> Comparisionのキャストが発生する
