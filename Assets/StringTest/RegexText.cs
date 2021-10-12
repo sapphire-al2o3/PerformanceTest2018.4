@@ -87,5 +87,63 @@ public class RegexText : MonoBehaviour
             result = Regex.Replace(text, pattern, "/");
             Profiler.EndSample();
         }
+
+        // 2.6KB
+        {
+            Profiler.BeginSample("instance.Match");
+            string text = "abc0def";
+            var pattern = new Regex("[0-9]");
+            for (int i = 0; i < 10; i++)
+            {
+                var match = pattern.Match(text);
+                if (match.Success)
+                {
+                }
+            }
+            Profiler.EndSample();
+        }
+
+        // 0.5KB
+        {
+            Profiler.BeginSample("instance.IsMatch");
+            string text = "abc0def";
+            var pattern = new Regex("[0-9]");
+            for (int i = 0; i < 10; i++)
+            {
+                var match = pattern.IsMatch(text);
+                if (match)
+                {
+                }
+            }
+            Profiler.EndSample();
+        }
+
+        // 5.0KB
+        {
+            Profiler.BeginSample("Regex.Match");
+            string text = "abc0def";
+            for (int i = 0; i < 10; i++)
+            {
+                var match = Regex.Match(text, "[0-9]");
+                if (match.Success)
+                {
+                }
+            }
+            Profiler.EndSample();
+        }
+
+        // 3.2KB
+        {
+            Profiler.BeginSample("Regex.IsMatch");
+            string text = "abc0def";
+            for (int i = 0; i < 10; i++)
+            {
+                var match = Regex.IsMatch(text, "[0-9]");
+                if (match)
+                {
+                }
+            }
+            Profiler.EndSample();
+        }
     }
 }
