@@ -227,6 +227,13 @@ public class DictionaryTest : MonoBehaviour
             Profiler.EndSample();
         }
 
+        // 3.1KB
+        {
+            Profiler.BeginSample("dictionary<string, bool>(100)");
+            var d = new Dictionary<string, bool>(100);
+            Profiler.EndSample();
+        }
+
         // 217.3KB
         Profiler.BeginSample("dictionary<int, int>(10000)");
         dic1 = new Dictionary<int, int>(10000);
@@ -271,6 +278,41 @@ public class DictionaryTest : MonoBehaviour
         Profiler.BeginSample("reset dictionary (values)");
 
         Profiler.EndSample();
+
+        // 64B
+        {
+            Profiler.BeginSample("HashSet<string>");
+            var hashSet = new HashSet<string>();
+            Profiler.EndSample();
+        }
+
+        // 7.3KB
+        {
+            string[] items = new string[100];
+            for (int i = 0; i < 100; i++)
+            {
+                items[i] = i.ToString();
+            }
+            Profiler.BeginSample("HashSet<string> add 100");
+            var hashSet = new HashSet<string>();
+            for (int i = 0; i < 100; i++)
+            {
+                hashSet.Add(items[i]);
+            }
+            Profiler.EndSample();
+        }
+
+        // 2.2KB
+        {
+            string[] items = new string[100];
+            for (int i = 0; i < 100; i++)
+            {
+                items[i] = i.ToString();
+            }
+            Profiler.BeginSample("HashSet<string> 100");
+            var hashSet = new HashSet<string>(items);
+            Profiler.EndSample();
+        }
 
         // 96B
         {
