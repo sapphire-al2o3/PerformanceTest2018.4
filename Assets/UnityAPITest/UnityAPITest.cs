@@ -26,6 +26,7 @@ public class UnityAPITest : MonoBehaviour
     {
         public int a;
         public int b;
+        public int[] array;
     }
 
     void Receive()
@@ -318,21 +319,22 @@ public class UnityAPITest : MonoBehaviour
         }
 
         {
-            // 24byte
+            // 80byte
             Profiler.BeginSample("JsonUtility object");
             JsonTestClass json = new JsonTestClass();
             json.a = 1;
             json.b = 2;
+            json.array = new int[]{ 1, 2, 3, 4 };
             Profiler.EndSample();
 
-            // 78byte
+            // 114byte
             Profiler.BeginSample("JsonUtility.ToJson");
             string text = JsonUtility.ToJson(json);
             Profiler.EndSample();
 
             Debug.Log(text);
 
-            // 24byte
+            // 80byte
             Profiler.BeginSample("JsonUtility.FromJson");
             var data = JsonUtility.FromJson<JsonTestClass>(text);
             Profiler.EndSample();
