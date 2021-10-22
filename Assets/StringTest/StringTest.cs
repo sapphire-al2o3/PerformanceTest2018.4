@@ -658,5 +658,18 @@ public class StringTest : MonoBehaviour
             string s = sb.ToString();
             Debug.Log(s);
         }
+
+        // 3.9KB
+        {
+            Profiler.BeginSample("ToUpper");
+            string text = "abcdefg";
+
+            for (int i = 0; i < 100; i++)
+            {
+                string upper = text.ToUpper();
+            }
+
+            Profiler.EndSample();
+        }
     }
 }
