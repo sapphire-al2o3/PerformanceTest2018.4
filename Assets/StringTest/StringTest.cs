@@ -671,5 +671,25 @@ public class StringTest : MonoBehaviour
 
             Profiler.EndSample();
         }
-    }
+
+		{
+			Profiler.BeginSample("int + string");
+			string text = "abcdefg";
+			int n = 99;
+
+			string s = n + text;
+
+			Profiler.EndSample();
+		}
+
+		{
+			Profiler.BeginSample("string + int");
+			string text = "abcdefg";
+			int n = 99;
+
+			string s = text + n;
+
+			Profiler.EndSample();
+		}
+	}
 }
